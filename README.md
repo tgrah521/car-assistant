@@ -1,5 +1,6 @@
 # car-assistant
-* Whatsapp send messages to COntacts from kontakte.json list
+* Acitvate Voice assitant by saying "Hey" or Hello or using GPIO PIN 17 Button
+* Whatsapp send messages to Contacts from kontakte.json list
 * Stream Music from Youtube via voice assistant 
 * can ask questions to gemini
 * Playing random song from a txt with name "recently_played.txt"
