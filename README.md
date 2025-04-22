@@ -36,8 +36,8 @@ Features
 
 * .env Datei mit folgenden Inhalten:
 
- * AI_API_KEY=dein_gemini_api_key
- * YOUTUBE_API_KEY=dein_youtube_api_key
+   * AI_API_KEY=dein_gemini_api_key
+   * YOUTUBE_API_KEY=dein_youtube_api_key
 
 # Dependencies:
 
