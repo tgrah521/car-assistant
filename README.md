@@ -51,7 +51,7 @@ pyttsx3
 pyaudio               
 
 * Fahrzeugdaten via OBD
-obd
+  * obd
 
 * System/Umgebungsvariablen
 python-dotenv
