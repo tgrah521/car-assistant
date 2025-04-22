@@ -1,7 +1,8 @@
 # car-assistant
-** Ein sprachgesteuerter Assistent für dein Auto, der mit OBD-II-Daten arbeitet, Musik streamt,
-WhatsApp-Nachrichten verschickt und sogar mit KI Fragen beantwortet.
-Ideal für den Raspberry Pi in Kombination mit einem ELM327 Adapter!
+**Ein sprachgesteuerter Assistent für dein Auto**, der mit **OBD-II-Daten** arbeitet,
+🎶 Musik streamt, 💬 WhatsApp-Nachrichten verschickt und sogar mit 🤖 KI deine Fragen beantwortet.  
+Ideal für den **Raspberry Pi** in Kombination mit einem **ELM327 OBD-II Adapter**!
+
 Features
 * Voice Activation: Aktiviere den Assistenten per Sprachbefehl ("Hey", "Hallo", "BMW") oder über einen Button an GPIO PIN 17.
 
