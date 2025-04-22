@@ -41,18 +41,18 @@ YOUTUBE_API_KEY=dein_youtube_api_key
 
 # Dependencies:
 
-# KI und Google APIs
+* KI und Google APIs
 google-generativeai
 google-api-python-client
 
-# Sprachsteuerung und TTS
+* Sprachsteuerung und TTS
 speechrecognition
 pyttsx3
 pyaudio               
 
-# Fahrzeugdaten via OBD
+* Fahrzeugdaten via OBD
 obd
 
-# System/Umgebungsvariablen
+* System/Umgebungsvariablen
 python-dotenv
 
