@@ -3,16 +3,16 @@ import random
 
 def write_in_file(song):
     song = song + "\n"
-    with open("recently_played.txt", "a") as f:
+    with open("/home/tgrah/recently_played.txt", "a") as f:
         f.write(song)
 
 def read_file():
     try:
-        if not os.path.exists("recently_played.txt"):
-            open("recently_played.txt", "w").close()
+        if not os.path.exists("/home/tgrah/recently_played.txt"):
+            open("/home/tgrah/recently_played.txt", "w").close()
             return
 
-        with open("recently_played.txt", "r") as file:
+        with open("/home/tgrah/recently_played.txt", "r") as file:
             content = file.read().strip()
 
         if not content:

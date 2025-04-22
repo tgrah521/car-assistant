@@ -8,7 +8,7 @@ def send_message():
     kontakt_name = recognize_text().strip().lower()
 
     try:
-        with open("kontakte.json", "r") as f:
+        with open("/home/tgrah/kontakte.json", "r") as f:
             kontakte = json.load(f)
     except FileNotFoundError:
         say("Kontakte-Datei nicht gefunden.")
