@@ -39,3 +39,20 @@ Features
 AI_API_KEY=dein_gemini_api_key
 YOUTUBE_API_KEY=dein_youtube_api_key
 
+# Dependencies:
+
+# KI und Google APIs
+google-generativeai
+google-api-python-client
+
+# Sprachsteuerung und TTS
+speechrecognition
+pyttsx3
+pyaudio               
+
+# Fahrzeugdaten via OBD
+obd
+
+# System/Umgebungsvariablen
+python-dotenv
+
