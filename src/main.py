@@ -5,7 +5,8 @@ import os
 import socket
 import time
 from dotenv import load_dotenv
-from listener import handle_voice_command, say
+from listener import handle_voice_command
+from voice import say
 
 
 def is_connected():

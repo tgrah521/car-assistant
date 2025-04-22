@@ -1,11 +1,11 @@
 import json
 import subprocess
-from listener import recognize_text, say
+from voice import say, recognize_text
 
 
 def send_message():
     say("An wen möchten Sie eine Nachricht senden?")
-    kontakt_name = recognize_text().strip()
+    kontakt_name = recognize_text().strip().lower()
 
     try:
         with open("kontakte.json", "r") as f:

@@ -1,6 +1,6 @@
 import google.generativeai as genai
 from dotenv import load_dotenv
-from listener import recognize_text, say
+from voice import recognize_text, say
 import os
 
 load_dotenv()

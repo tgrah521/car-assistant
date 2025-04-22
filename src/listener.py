@@ -1,26 +1,15 @@
 import speech_recognition as sr
 import RPi.GPIO as GPIO
-import pyttsx3
 from audio_player import stream_and_download, play_mp3
 from load_songs import get_random_song
 from whatsapp import send_message
 from ai import ask_question
+from voice import say, recognize_text
 
 BUTTON_PIN = 17  
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-
-def say(text):
-    engine = pyttsx3.init()
-    engine.getProperty('voices')
-
-    engine.setProperty('pitch', 40)
-    engine.setProperty('rate', 130)
-    engine.setProperty('voice','german')
-    engine.setProperty('text','normalize')
-    engine.say(text)
-    engine.runAndWait()
 
 def listen():
     recognizer = sr.Recognizer()
@@ -47,23 +36,6 @@ def listen():
                 return False
             except KeyboardInterrupt:
                 return False
-
-def recognize_text():
-    recognizer = sr.Recognizer()
-    microphone = sr.Microphone()
-
-    with microphone as source:
-        recognizer.adjust_for_ambient_noise(source)
-        try:
-            audio = recognizer.listen(source,timeout=2, phrase_time_limit=3) 
-                # Spracherkennung
-            return recognizer.recognize_google(audio, language="de-DE")
-        except sr.WaitTimeoutError as e:
-            return ""
-        except sr.UnknownValueError:
-            return ""
-        except KeyboardInterrupt:
-            return ""
             
 def handle_voice_command():
     while True:
