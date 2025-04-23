@@ -1,6 +1,7 @@
 import speech_recognition as sr
 import RPi.GPIO as GPIO
 import threading
+import sounddevice
 from whatsapp import check_for_messages
 from audio_player import stream_and_download, play_mp3
 from load_songs import get_random_song
@@ -8,7 +9,7 @@ from whatsapp import send_message
 from ai import ask_question
 from voice import say, recognize_text
 
-BUTTON_PIN = 17  
+BUTTON_PIN = 17
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
@@ -24,7 +25,7 @@ def listen():
             try:
                 if GPIO.input(BUTTON_PIN) == GPIO.LOW:
                     return True
-                audio = recognizer.listen(source,timeout=2, phrase_time_limit=3) 
+                audio = recognizer.listen(source,timeout=2, phrase_time_limit=3)
                 # Spracherkennung
                 recognized_text = recognizer.recognize_google(audio, language="de-DE")
                 print("Erkannter Text:"+ recognized_text)

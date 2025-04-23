@@ -21,7 +21,10 @@ def wait_for_connection():
         time.sleep(2)
 
 def main():
-    subprocess.Popen(["python", "obd_assistant.py"])
+    try:
+        subprocess.Popen(["python", "obd_assistant.py"])
+    except:
+        print("Fehler bei der OBD verbindung")
     if not is_connected():
         say("Netzwerkverbindung fehlgeschlagen")
         wait_for_connection()

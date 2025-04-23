@@ -47,7 +47,6 @@ def send_message():
 
 def check_for_messages():
     file_path = "/home/tgrah/my-whatsapp-bot/nachrichten.json"
-    
     if not os.path.exists(file_path):
         print("Datei existiert nicht!")
         return
@@ -57,11 +56,11 @@ def check_for_messages():
 
     while True:
         try:
+            print("checking...")
             current_modified = os.path.getmtime(file_path)
             if current_modified != last_modified:
                 print("File has changed!")
                 say("Sie haben eine neue Whatsapp nachricht!")
-                say("Soll ich sie Vorlesen ?")
                 confirmation = recognize_text().lower()
 
                 if confirmation in ["ja", "korrekt", "stimmt", "richtig"]:
@@ -76,6 +75,8 @@ def check_for_messages():
                             if nachricht_typ == "chat":
                                 say(f"{absender} schrieb")
                                 say(text)
+                                print(f"{absender} schrieb")
+                                print(text)
                             else:
                                 say(f"{absender} sendet")
                                 say(f"{nachricht_typ}")
