@@ -9,6 +9,7 @@ from whatsapp import send_message
 from ai import ask_question
 from voice import say, recognize_text
 
+MUSIK_PROCESS = None
 BUTTON_PIN = 17
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -41,9 +42,12 @@ def listen():
                 return False
             
 def handle_voice_command():
+    global MUSIK_PROCESS
     threading.Thread(target=check_for_messages).start()
     while True:
         if listen():
+            if MUSIK_PROCESS:
+                MUSIK_PROCESS.terminate()
             play_mp3("/home/tgrah/Dokumente/hearing.mp3",2)
             action = recognize_text()
             if action == "":
@@ -56,9 +60,9 @@ def handle_voice_command():
                     if song == "":
                         say("Deine liste scheint leer zu sein")
                         break
-                    stream_and_download(song,".")
+                    MUSIK_PROCESS = stream_and_download(song,".")
                 elif "frage" in action.lower():
                     ask_question()
                 elif "spiele" in action.lower():
-                    stream_and_download(action.lower().split("spiele", 1)[1].strip(), ".")
+                    MUSIK_PROCESS = stream_and_download(action.lower().split("spiele", 1)[1].strip(), ".")
                 

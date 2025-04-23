@@ -31,9 +31,9 @@ def stream_and_download(song, output_path):
         direct_url = get_direct_audio_url(video_url)
         print(f"Direkte Audio-URL erhalten: {direct_url}")
 
-        subprocess.Popen(["cvlc", "--play-and-exit", "--no-video", direct_url])
+        process = subprocess.Popen(["cvlc", "--play-and-exit", "--no-video", direct_url])
         print("VLC wurde gestartet, Audio-Streaming läuft!")
-
+        return process
         #threading.Thread(target=download_mp3, args=(video_url, output_path)).start()
 
     except Exception as e:

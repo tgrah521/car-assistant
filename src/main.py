@@ -21,6 +21,7 @@ def wait_for_connection():
         time.sleep(2)
 
 def main():
+    say("Hallo")
     try:
         subprocess.Popen(["python", "obd_assistant.py"])
     except:
