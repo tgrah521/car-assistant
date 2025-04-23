@@ -3,6 +3,7 @@ import subprocess
 import os
 import time
 from voice import say, recognize_text
+from audio_player import play_mp3
 
 
 def send_message():
@@ -59,6 +60,25 @@ def check_for_messages():
             current_modified = os.path.getmtime(file_path)
             if current_modified != last_modified:
                 print("File has changed!")
+                say("Sie haben eine neue Whatsapp nachricht!")
+                confirmation = recognize_text().lower()
+
+                if confirmation in ["ja", "korrekt", "stimmt", "richtig"]:
+                    with open(file_path, "r", encoding="utf-8") as f:
+                        nachrichten = json.load(f)
+                        if nachrichten:
+                            letzte_nachricht = nachrichten[-1]
+                            absender = letzte_nachricht.get("von", "Unbekannt")
+                            text = letzte_nachricht.get("text", "Kein Text")
+                            nachricht_typ = letzte_nachricht.get("type", "unbekannt")
+
+                            if nachricht_typ == "chat":
+                                say(f"{absender} schrieb")
+                                say(text)
+                            else:
+                                say(f"{absender} sendet")
+                                say(f"{nachricht_typ}")
+
                 last_modified = current_modified
         except FileNotFoundError:
             print("Datei wurde gelöscht oder verschoben.")
