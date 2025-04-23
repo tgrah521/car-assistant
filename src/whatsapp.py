@@ -61,6 +61,7 @@ def check_for_messages():
             if current_modified != last_modified:
                 print("File has changed!")
                 say("Sie haben eine neue Whatsapp nachricht!")
+                say("Soll ich sie Vorlesen ?")
                 confirmation = recognize_text().lower()
 
                 if confirmation in ["ja", "korrekt", "stimmt", "richtig"]:
