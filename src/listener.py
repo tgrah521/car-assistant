@@ -1,5 +1,7 @@
 import speech_recognition as sr
 import RPi.GPIO as GPIO
+import threading
+from whatsapp import check_for_messages
 from audio_player import stream_and_download, play_mp3
 from load_songs import get_random_song
 from whatsapp import send_message
@@ -38,6 +40,7 @@ def listen():
                 return False
             
 def handle_voice_command():
+    threading.Thread(target=check_for_messages).start()
     while True:
         if listen():
             play_mp3("/home/tgrah/Dokumente/hearing.mp3",2)

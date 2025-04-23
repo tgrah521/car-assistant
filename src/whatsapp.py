@@ -1,5 +1,7 @@
 import json
 import subprocess
+import os
+import time
 from voice import say, recognize_text
 
 
@@ -39,3 +41,26 @@ def send_message():
             print(e.stderr)
     else:
         send_message()
+
+
+
+def check_for_messages():
+    file_path = "/home/tgrah/my-whatsapp-bot/nachrichten.json"
+    
+    if not os.path.exists(file_path):
+        print("Datei existiert nicht!")
+        return
+
+    last_modified = os.path.getmtime(file_path)
+    print("Now detecting filechanges")
+
+    while True:
+        try:
+            current_modified = os.path.getmtime(file_path)
+            if current_modified != last_modified:
+                print("File has changed!")
+                last_modified = current_modified
+        except FileNotFoundError:
+            print("Datei wurde gelöscht oder verschoben.")
+        time.sleep(2)
+
