@@ -5,9 +5,10 @@ import os
 import socket
 import time
 from dotenv import load_dotenv
-from listener import handle_voice_command
+from listener import handle_voice_command, play_mp3
 from voice import say
 
+INTRO_MP3 = os.path.join(os.path.dirname(__file__), '../resource/intro.mp3')
 
 def is_connected():
     try:
@@ -21,7 +22,7 @@ def wait_for_connection():
         time.sleep(2)
 
 def main():
-    say("Hallo")
+    play_mp3(INTRO_MP3, 0)
     try:
         subprocess.Popen(["python", "/home/tgrah/car-assistent/src/obd_assistant.py"])
     except:

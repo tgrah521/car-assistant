@@ -1,18 +1,20 @@
 import os
 import random
 
+FILE_PATH = os.path.join(os.path.dirname(__file__), '../resource/recently_played.txt')
+
 def write_in_file(song):
     song = song + "\n"
-    with open("/home/tgrah/recently_played.txt", "a") as f:
+    with open(FILE_PATH, "a") as f:
         f.write(song)
 
 def read_file():
     try:
-        if not os.path.exists("/home/tgrah/recently_played.txt"):
-            open("/home/tgrah/recently_played.txt", "w").close()
+        if not os.path.exists(FILE_PATH):
+            open(FILE_PATH, "w").close()
             return
 
-        with open("/home/tgrah/recently_played.txt", "r") as file:
+        with open(FILE_PATH, "r") as file:
             content = file.read().strip()
 
         if not content:
@@ -28,4 +30,4 @@ def get_random_song():
         index = random.randint(0,len(arr))
         return arr[index-1]
     except Exception as e:
-        return ""
+        return ""   

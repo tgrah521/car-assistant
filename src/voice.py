@@ -18,6 +18,8 @@ def recognize_text(message):
     microphone = sr.Microphone()
     if message != "":
         say(message)
+    else:
+        say("Sage: Ja, richtig, korrekt oder stimmt")
     with microphone as source:
         recognizer.adjust_for_ambient_noise(source)
         try:

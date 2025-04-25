@@ -2,6 +2,7 @@ import speech_recognition as sr
 import RPi.GPIO as GPIO
 import threading
 import sounddevice
+import os
 from whatsapp import check_for_messages
 from audio_player import stream_and_download, play_mp3
 from load_songs import get_random_song
@@ -14,6 +15,7 @@ BUTTON_PIN = 17
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+HEARING_MP3 = os.path.join(os.path.dirname(__file__), '../resource/hearing.mp3')
 
 def listen():
     recognizer = sr.Recognizer()
@@ -48,8 +50,8 @@ def handle_voice_command():
         if listen():
             if MUSIK_PROCESS:
                 MUSIK_PROCESS.terminate()
-            play_mp3("/home/tgrah/Dokumente/hearing.mp3",2)
-            action = recognize_text("")
+            #play_mp3(HEARING_MP3, 2)
+            action = recognize_text("ja?")
             if action == "":
                 say("Das habe ich leider nicht verstanden")
             else:
