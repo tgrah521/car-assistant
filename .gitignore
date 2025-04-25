@@ -12,3 +12,8 @@ __pycache__/
 
 # Node
 node_modules/
+
+# Privatshit
+ 
+/resource/nachrichten.json
+/resource/kontakte.json
