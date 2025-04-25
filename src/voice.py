@@ -13,14 +13,15 @@ def say(text):
     engine.say(text)
     engine.runAndWait()
 
-def recognize_text():
+def recognize_text(message):
     recognizer = sr.Recognizer()
     microphone = sr.Microphone()
-
+    if message != "":
+        say(message)
     with microphone as source:
         recognizer.adjust_for_ambient_noise(source)
         try:
-            audio = recognizer.listen(source,timeout=3, phrase_time_limit=10)
+            audio = recognizer.listen(source,timeout=3, phrase_time_limit=3)
                 # Spracherkennung
             return recognizer.recognize_google(audio, language="de-DE")
         except sr.WaitTimeoutError as e:

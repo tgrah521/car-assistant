@@ -5,9 +5,9 @@ import os
 from dotenv import load_dotenv
 from voice import say
 import time
+from pathlib import Path
 
-load_dotenv()
-
+load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / '.env')
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 
 def get_direct_audio_url(youtube_url):
@@ -15,7 +15,7 @@ def get_direct_audio_url(youtube_url):
     command = [
         "yt-dlp",
         "-f", "bestaudio",
-        "-g",  
+        "-g",
         youtube_url
     ]
     result = subprocess.run(command, capture_output=True, text=True, check=True)
@@ -40,6 +40,7 @@ def stream_and_download(song, output_path):
         say(f"Fehler beim Starten des Streams")
 
 def get_video_url(query):
+    print(YOUTUBE_API_KEY)
     youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
     request = youtube.search().list(
         q=query,
@@ -81,11 +82,10 @@ def download_mp3(video_url, output_path):
     except Exception as e:
         print(f"Fehler beim MP3-Download: {e}")
         return None
-    
+
 
 def play_mp3(path,sleepTime):
     command = ["vlc", "--play-and-exit",path]
     subprocess.Popen(command)
     time.sleep(sleepTime)
     return
-

@@ -8,8 +8,7 @@ load_dotenv()
 AI_API_KEY = os.getenv("AI_API_KEY")
 
 def ask_question():
-    say("Stelle mir deine Frage")
-    question = recognize_text()
+    question = recognize_text("Stelle mir deine Frage")
     if question == "":
         say("Entschuldigung. ich konnte deine Frage leider nicht verstehen")
         return

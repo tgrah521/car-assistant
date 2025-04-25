@@ -26,7 +26,7 @@ def listen():
             try:
                 if GPIO.input(BUTTON_PIN) == GPIO.LOW:
                     return True
-                audio = recognizer.listen(source,timeout=2, phrase_time_limit=3)
+                audio = recognizer.listen(source,timeout=3, phrase_time_limit=3)
                 # Spracherkennung
                 recognized_text = recognizer.recognize_google(audio, language="de-DE")
                 print("Erkannter Text:"+ recognized_text)
@@ -40,7 +40,7 @@ def listen():
                 return False
             except KeyboardInterrupt:
                 return False
-            
+
 def handle_voice_command():
     global MUSIK_PROCESS
     threading.Thread(target=check_for_messages).start()
@@ -49,7 +49,7 @@ def handle_voice_command():
             if MUSIK_PROCESS:
                 MUSIK_PROCESS.terminate()
             play_mp3("/home/tgrah/Dokumente/hearing.mp3",2)
-            action = recognize_text()
+            action = recognize_text("")
             if action == "":
                 say("Das habe ich leider nicht verstanden")
             else:
@@ -65,4 +65,3 @@ def handle_voice_command():
                     ask_question()
                 elif "spiele" in action.lower():
                     MUSIK_PROCESS = stream_and_download(action.lower().split("spiele", 1)[1].strip(), ".")
-                

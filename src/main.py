@@ -23,7 +23,7 @@ def wait_for_connection():
 def main():
     say("Hallo")
     try:
-        subprocess.Popen(["python", "obd_assistant.py"])
+        subprocess.Popen(["python", "/home/tgrah/car-assistent/src/obd_assistant.py"])
     except:
         print("Fehler bei der OBD verbindung")
     if not is_connected():

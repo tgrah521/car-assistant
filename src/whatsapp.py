@@ -7,8 +7,7 @@ from audio_player import play_mp3
 
 
 def send_message():
-    say("An wen möchten Sie eine Nachricht senden?")
-    kontakt_name = recognize_text().strip().lower()
+    kontakt_name = recognize_text("An wen möchten Sie eine Nachricht senden?").strip().lower()
 
     try:
         with open("/home/tgrah/kontakte.json", "r") as f:
@@ -23,11 +22,10 @@ def send_message():
 
     empfänger = kontakte[kontakt_name]
 
-    say("Wie lautet die Nachricht?")
-    message = recognize_text()
+    message = recognize_text("Wie lautet die Nachricht?")
 
     say(f"Ich sende '{message}' an {kontakt_name}. Ist das korrekt?")
-    confirmation = recognize_text().lower()
+    confirmation = recognize_text("").lower()
 
     if confirmation in ["ja", "korrekt", "stimmt", "richtig"]:
         command = ["npx", "mudslide", "send", empfänger, message]
@@ -60,8 +58,8 @@ def check_for_messages():
             current_modified = os.path.getmtime(file_path)
             if current_modified != last_modified:
                 print("File has changed!")
-                say("Sie haben eine neue Whatsapp nachricht!")
-                confirmation = recognize_text().lower()
+                say(f"Sie haben eine neue nachricht!")
+                confirmation = recognize_text("Soll ich sie vorlesen?").lower()
 
                 if confirmation in ["ja", "korrekt", "stimmt", "richtig"]:
                     with open(file_path, "r", encoding="utf-8") as f:
@@ -85,4 +83,3 @@ def check_for_messages():
         except FileNotFoundError:
             print("Datei wurde gelöscht oder verschoben.")
         time.sleep(2)
-
