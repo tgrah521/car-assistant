@@ -82,6 +82,7 @@ def download_mp3(video_url, output_path, song):
         print(f"Downloaded and saved as: {current_mp3_file_path}")
         try:
             auto_copy(song)
+            play_mp3(os.path.join(os.path.dirname(__file__), '../resource/success.mp3'))
         except:
             say("Fehler beim kopieren")
         return current_mp3_file_path
@@ -100,35 +101,26 @@ def play_mp3(path,sleepTime):
 
 
 def auto_copy(song):
-    usb_mount_points = [os.path.join('/media/tgrah', d) for d in os.listdir('/media/tgrah') if os.path.isdir(os.path.join('/media/tgrah', d))]
-    current_mp3_file_path = "/home/tgrah/Musik/current.mp3"
+    try:
+        usb_mount_points = [os.path.join('/media/tgrah', d) for d in os.listdir('/media/tgrah') if os.path.isdir(os.path.join('/media/tgrah', d))]
+        current_mp3_file_path = "/home/tgrah/Musik/current.mp3"
 
-    if os.path.exists("/home/tgrah/Musik/fixed_current.mp3"):
-        os.remove("/home/tgrah/Musik/fixed_current.mp3")
+        if os.path.exists("/home/tgrah/Musik/fixed_current.mp3"):
+            os.remove("/home/tgrah/Musik/fixed_current.mp3")
 
-    if usb_mount_points:
-        for mount_point in usb_mount_points:
-            usb_file_path = os.path.join(mount_point, "current.mp3")
-            while True:
-                # Benutzer nach einem Titel fragen
-                title = song
-                if title == "Kein Titel wurde abgespielt":
-                    return False
-                if title:
-                    confirmation = "ja"
-                    if "ja" in confirmation.lower() or "richtig" in confirmation.lower():
-                        # Fixe die MP3-Datei, bevor sie auf den USB-Stick kopiert wird
-                        fixed_mp3_file_path = fix_mp3(current_mp3_file_path, "/home/tgrah/Musik")
-                        if fixed_mp3_file_path:
-                            # Kopiere die gefixte Datei mit dem Titel als Dateinamen auf den USB-Stick
-                            if FOLDER_NAME != "undefined":
-                                shutil.copy(fixed_mp3_file_path, os.path.join(mount_point,FOLDER_NAME, f"{title}.mp3"))
-                            else: 
-                                shutil.copy(fixed_mp3_file_path, os.path.join(mount_point, f"{title}.mp3"))
-                            os.remove(fixed_mp3_file_path)
-                            return True
+        if usb_mount_points:
+            for mount_point in usb_mount_points:
+                usb_file_path = os.path.join(mount_point, "current.mp3")
+                while True:
+                    fixed_mp3_file_path = fix_mp3(current_mp3_file_path, "/home/tgrah/Musik")
+                    if fixed_mp3_file_path:
+                        shutil.copy(fixed_mp3_file_path, os.path.join(mount_point, f"{song}.mp3"))
+                        os.remove(fixed_mp3_file_path)
+                        return True
+            return False
         return False
-    return False
+    except:
+        say("Ein unerwarteter Fehler ist aufgetreten")
 
 
 def fix_mp3(mp3_file_path, output_path):
