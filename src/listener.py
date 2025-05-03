@@ -11,6 +11,7 @@ from ai import ask_question
 from voice import say, recognize_text
 
 MUSIK_PROCESS = None
+KOPIEREN = False
 BUTTON_PIN = 17
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -45,6 +46,7 @@ def listen():
 
 def handle_voice_command():
     global MUSIK_PROCESS
+    global KOPIEREN
     threading.Thread(target=check_for_messages).start()
     while True:
         if listen():
@@ -62,8 +64,11 @@ def handle_voice_command():
                     if song == "":
                         say("Deine liste scheint leer zu sein")
                         break
-                    MUSIK_PROCESS = stream_and_download(song,".")
+                    MUSIK_PROCESS = stream_and_download(song,".",KOPIEREN)
                 elif "frage" in action.lower():
                     ask_question()
+                elif "kopieren" in action.lower():
+                    KOPIEREN = not KOPIEREN
+                    say(KOPIEREN)
                 elif "spiele" in action.lower():
-                    MUSIK_PROCESS = stream_and_download(action.lower().split("spiele", 1)[1].strip(), ".")
+                    MUSIK_PROCESS = stream_and_download(action.lower().split("spiele", 1)[1].strip(), ".",KOPIEREN)
