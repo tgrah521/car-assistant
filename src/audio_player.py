@@ -33,9 +33,10 @@ def stream_and_download(song, output_path, kopieren):
 
         process = subprocess.Popen(["cvlc", "--play-and-exit", "--no-video", direct_url])
         print("VLC wurde gestartet, Audio-Streaming läuft!")
-        return process
+    
         if kopieren:
-            threading.Thread(target=download_mp3, args=(video_url, output_path)).start()
+            threading.Thread(target=download_mp3, args=(video_url, output_path, song)).start()
+        return process
 
     except Exception as e:
         say(f"Fehler beim Starten des Streams")
@@ -53,8 +54,9 @@ def get_video_url(query):
     video_id = response['items'][0]['id']['videoId']
     return f'https://www.youtube.com/watch?v={video_id}'
 
-def download_mp3(video_url, output_path):
+def download_mp3(video_url, output_path, song):
     try:
+        output_path = "/home/tgrah/Musik"
         print(f"Downloading audio from: {video_url}")
         clean_title = "downloaded_audio"
         mp3_file_path = os.path.join(output_path, f"{clean_title}.mp3")
@@ -78,6 +80,10 @@ def download_mp3(video_url, output_path):
         os.rename(mp3_file_path, current_mp3_file_path)
 
         print(f"Downloaded and saved as: {current_mp3_file_path}")
+        try:
+            auto_copy(song)
+        except:
+            say("Fehler beim kopieren")
         return current_mp3_file_path
 
     except Exception as e:
@@ -93,8 +99,7 @@ def play_mp3(path,sleepTime):
 
 
 
-def auto_copy():
-    global FOLDER_NAME
+def auto_copy(song):
     usb_mount_points = [os.path.join('/media/tgrah', d) for d in os.listdir('/media/tgrah') if os.path.isdir(os.path.join('/media/tgrah', d))]
     current_mp3_file_path = "/home/tgrah/Musik/current.mp3"
 
@@ -103,10 +108,10 @@ def auto_copy():
 
     if usb_mount_points:
         for mount_point in usb_mount_points:
-            usb_file_path = os.path.join(mount_point,FOLDER_NAME, "current.mp3")
+            usb_file_path = os.path.join(mount_point, "current.mp3")
             while True:
                 # Benutzer nach einem Titel fragen
-                title = "copy"
+                title = song
                 if title == "Kein Titel wurde abgespielt":
                     return False
                 if title:
