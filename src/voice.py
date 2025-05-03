@@ -19,10 +19,7 @@ def recognize_text(message):
     with microphone as source:
         recognizer.adjust_for_ambient_noise(source)
         try:
-            if message != "":
-                say(message)
-            else:
-                say("Sage: Ja, richtig, korrekt oder stimmt")
+            say(message)
             audio = recognizer.listen(source,timeout=3, phrase_time_limit=3)
                 # Spracherkennung
             return recognizer.recognize_google(audio, language="de-DE")

@@ -102,6 +102,7 @@ def play_mp3(path,sleepTime):
 
 def auto_copy(song):
     try:
+        print("Now trying to copy mp3 to USB...")
         usb_mount_points = [os.path.join('/media/tgrah', d) for d in os.listdir('/media/tgrah') if os.path.isdir(os.path.join('/media/tgrah', d))]
         current_mp3_file_path = "/home/tgrah/Musik/current.mp3"
 
@@ -120,6 +121,7 @@ def auto_copy(song):
             return False
         return False
     except:
+        print(f"there was a Oupsie while Copy to your USB Flash drive with {song}")
         say("Ein unerwarteter Fehler ist aufgetreten")
 
 

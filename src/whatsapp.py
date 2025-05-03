@@ -27,9 +27,9 @@ def send_message():
     message = recognize_text("Wie lautet die Nachricht?")
 
     say(f"Ich sende '{message}' an {kontakt_name}. Ist das korrekt?")
-    confirmation = recognize_text("").lower()
+    confirmation = recognize_text("Sage: Ja, richtig, korrekt oder stimmt").lower()
 
-    if confirmation in ["ja", "korrekt", "stimmt", "richtig"]:
+    if any(word in confirmation for word in ["ja", "korrekt", "stimmt", "richtig"]):
         command = ["npx", "mudslide", "send", empfänger, message]
         try:
             result = subprocess.run(command, check=True, capture_output=True, text=True)
