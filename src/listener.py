@@ -68,6 +68,12 @@ def handle_voice_command():
                     MUSIK_PROCESS = stream_and_download(song,".",KOPIEREN)
                 elif "frage" in action.lower():
                     ask_question()
+                elif "tank" in action.lower():
+                    say_obd_command("FUEL_LEVEL")
+                elif "kühlwasser" in action.lower():
+                    say_obd_command("COOLANT_TEMP")
+                elif "batterie" in action.lower():
+                    say_obd_command("CONTROL_MODULE_VOLTAGE")
                 elif "kopieren" in action.lower():
                     KOPIEREN = not KOPIEREN
                     say(KOPIEREN)
