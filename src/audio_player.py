@@ -1,3 +1,4 @@
+import shutil
 import subprocess
 import threading
 from googleapiclient.discovery import build
@@ -42,7 +43,6 @@ def stream_and_download(song, output_path, kopieren):
         say(f"Fehler beim Starten des Streams")
 
 def get_video_url(query):
-    print(YOUTUBE_API_KEY)
     youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
     request = youtube.search().list(
         q=query,
@@ -82,7 +82,7 @@ def download_mp3(video_url, output_path, song):
         print(f"Downloaded and saved as: {current_mp3_file_path}")
         try:
             auto_copy(song)
-            play_mp3(os.path.join(os.path.dirname(__file__), '../resource/success.mp3'))
+            play_mp3(os.path.join(os.path.dirname(__file__), '../resource/success.mp3'),0)
         except:
             say("Fehler beim kopieren")
         return current_mp3_file_path
@@ -115,13 +115,14 @@ def auto_copy(song):
                 while True:
                     fixed_mp3_file_path = fix_mp3(current_mp3_file_path, "/home/tgrah/Musik")
                     if fixed_mp3_file_path:
-                        shutil.copy(fixed_mp3_file_path, os.path.join(mount_point, f"{song}.mp3"))
+                        safe_song_name = "".join(c if c.isalnum() or c in " -_()" else "_" for c in song)
+                        shutil.copy(fixed_mp3_file_path, os.path.join(mount_point, f"{safe_song_name}.mp3"))
                         os.remove(fixed_mp3_file_path)
                         return True
             return False
         return False
-    except:
-        print(f"there was a Oupsie while Copy to your USB Flash drive with {song}")
+    except Exception as e:
+        print(f"there was a Oupsie while Copy to your USB Flash drive with {song}: {e}")
         say("Ein unerwarteter Fehler ist aufgetreten")
 
 
