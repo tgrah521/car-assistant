@@ -9,6 +9,7 @@ from load_songs import get_random_song
 from whatsapp import send_message
 from ai import ask_question
 from voice import say, recognize_text
+from obd_commands import say_obd_command
 
 MUSIK_PROCESS = None
 KOPIEREN = False
