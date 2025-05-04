@@ -10,6 +10,8 @@ from whatsapp import send_message
 from ai import ask_question
 from voice import say, recognize_text
 from obd_commands import say_obd_command
+from models.voice_commands_enums import VoiceCommand
+
 
 MUSIK_PROCESS = None
 KOPIEREN = False
@@ -31,7 +33,6 @@ def listen():
                 if GPIO.input(BUTTON_PIN) == GPIO.LOW:
                     return True
                 audio = recognizer.listen(source,timeout=3, phrase_time_limit=3)
-                # Spracherkennung
                 recognized_text = recognizer.recognize_google(audio, language="de-DE")
                 print("Erkannter Text:"+ recognized_text)
                 if "hallo" in recognized_text.lower() or "hey" in recognized_text.lower() or "bmw" in recognized_text.lower():
@@ -49,6 +50,7 @@ def handle_voice_command():
     global MUSIK_PROCESS
     global KOPIEREN
     threading.Thread(target=check_for_messages).start()
+
     while True:
         if listen():
             if MUSIK_PROCESS:
@@ -56,26 +58,31 @@ def handle_voice_command():
             #play_mp3(HEARING_MP3, 2)
             action = recognize_text("ja?")
             if action == "":
+                action = recognize_text("Das habe ich leider nicht verstanden. Bitte Wiederhole")
+                continue
+
+            command = VoiceCommand.from_text(action)
+            if command is None:
                 say("Das habe ich leider nicht verstanden")
             else:
-                if "whatsapp" in action.lower():
+                if command == VoiceCommand.WHATSAPP:
                     send_message()
-                elif "musik" in action.lower():
+                elif command == VoiceCommand.MUSIK:
                     song = get_random_song()
                     if song == "":
-                        say("Deine liste scheint leer zu sein")
-                        break
-                    MUSIK_PROCESS = stream_and_download(song,".",KOPIEREN)
-                elif "frage" in action.lower():
+                        say("Deine Liste scheint leer zu sein")
+                        continue
+                    MUSIK_PROCESS = stream_and_download(song, ".", KOPIEREN)
+                elif command == VoiceCommand.FRAGE:
                     ask_question()
-                elif "tank" in action.lower():
+                elif command == VoiceCommand.TANK:
                     say_obd_command("FUEL_LEVEL")
-                elif "kühlwasser" in action.lower():
+                elif command == VoiceCommand.KUEHLWASSER:
                     say_obd_command("COOLANT_TEMP")
-                elif "batterie" in action.lower():
+                elif command == VoiceCommand.BATTERIE:
                     say_obd_command("CONTROL_MODULE_VOLTAGE")
-                elif "kopieren" in action.lower():
+                elif command == VoiceCommand.KOPIEREN:
                     KOPIEREN = not KOPIEREN
                     say(KOPIEREN)
-                elif "spiele" in action.lower():
-                    MUSIK_PROCESS = stream_and_download(action.lower().split("spiele", 1)[1].strip(), ".",KOPIEREN)
+                elif command == VoiceCommand.SPIELE:
+                        MUSIK_PROCESS = stream_and_download(action.lower().split("spiele", 1)[1].strip(), ".", KOPIEREN)
