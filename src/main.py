@@ -7,19 +7,10 @@ import time
 from dotenv import load_dotenv
 from listener import handle_voice_command, play_mp3
 from voice import say
+from network import check_for_connection
 
 INTRO_MP3 = os.path.join(os.path.dirname(__file__), '../resource/intro.mp3')
 
-def is_connected():
-    try:
-        socket.create_connection(("8.8.8.8", 53), timeout=2)
-        return True
-    except OSError:
-        return False
-
-def wait_for_connection():
-    while not is_connected():
-        time.sleep(2)
 
 def main():
     play_mp3(INTRO_MP3, 0)
@@ -27,9 +18,8 @@ def main():
         subprocess.Popen(["python", "/home/tgrah/car-assistent/src/obd_assistant.py"])
     except:
         print("Fehler bei der OBD verbindung")
-    if not is_connected():
-        say("Netzwerkverbindung fehlgeschlagen")
-        wait_for_connection()
+    check_for_connection()
+    say("Netzwerkverbindung erfolgreich")
     handle_voice_command()
 
 if __name__ == "__main__":

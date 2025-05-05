@@ -9,6 +9,7 @@ class VoiceCommand(Enum):
     KUEHLWASSER = auto()
     BATTERIE = auto()
     KOPIEREN = auto()
+    HELP = auto()
 
     @staticmethod
     def from_text(text: str):
@@ -29,4 +30,6 @@ class VoiceCommand(Enum):
             return VoiceCommand.BATTERIE
         elif "kopieren" in text:
             return VoiceCommand.KOPIEREN
+        elif "hilfe" in text:
+            return VoiceCommand.HELP
         return None

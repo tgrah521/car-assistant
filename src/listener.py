@@ -11,7 +11,8 @@ from ai import ask_question
 from voice import say, recognize_text
 from obd_commands import say_obd_command
 from models.voice_commands_enums import VoiceCommand
-
+from help import tell_all_voice_commands
+from network import check_for_connection
 
 MUSIK_PROCESS = None
 KOPIEREN = False
@@ -30,6 +31,7 @@ def listen():
             recognizer.adjust_for_ambient_noise(source)
             print("Hört zu...")
             try:
+                check_for_connection()
                 if GPIO.input(BUTTON_PIN) == GPIO.LOW:
                     return True
                 audio = recognizer.listen(source,timeout=3, phrase_time_limit=3)
@@ -59,7 +61,6 @@ def handle_voice_command():
             action = recognize_text("ja?")
             if action == "":
                 action = recognize_text("Das habe ich leider nicht verstanden. Bitte Wiederhole")
-                continue
 
             command = VoiceCommand.from_text(action)
             if command is None:
@@ -83,6 +84,11 @@ def handle_voice_command():
                     say_obd_command("CONTROL_MODULE_VOLTAGE")
                 elif command == VoiceCommand.KOPIEREN:
                     KOPIEREN = not KOPIEREN
-                    say(KOPIEREN)
+                    if KOPIEREN:
+                        say("Kopieren wurde aktiviert")
+                    else:
+                        say("Kopieren wurde deaktiviert")
+                elif command == VoiceCommand.HELP:
+                    tell_all_voice_commands()
                 elif command == VoiceCommand.SPIELE:
                         MUSIK_PROCESS = stream_and_download(action.lower().split("spiele", 1)[1].strip(), ".", KOPIEREN)
