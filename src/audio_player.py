@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from voice import say
 import time
 from pathlib import Path
+from load_songs import write_in_file
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / '.env')
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
@@ -34,7 +35,10 @@ def stream_and_download(song, output_path, kopieren):
 
         process = subprocess.Popen(["cvlc", "--play-and-exit", "--no-video", direct_url])
         print("VLC wurde gestartet, Audio-Streaming läuft!")
-    
+        try:
+            write_in_file(song)
+        except:
+            say("Song konnte nicht in die liste geschrieben werden")
         if kopieren:
             threading.Thread(target=download_mp3, args=(video_url, output_path, song)).start()
         return process
