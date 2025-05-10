@@ -8,6 +8,8 @@ from voice import say
 import time
 from pathlib import Path
 from load_songs import write_in_file
+import isodate
+
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / '.env')
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
@@ -57,6 +59,24 @@ def get_video_url(query):
     response = request.execute()
     video_id = response['items'][0]['id']['videoId']
     return f'https://www.youtube.com/watch?v={video_id}'
+
+def get_video_duration(video_id):
+    youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
+    request = youtube.videos().list(
+        part='contentDetails',
+        id=video_id
+    )
+    response = request.execute()
+    duration = response['items'][0]['contentDetails']['duration']
+
+    return get_duration_in_seconds(duration)
+
+
+def get_duration_in_seconds(duration_str):
+    duration = isodate.parse_duration(duration_str)
+    return int(duration.total_seconds())
+
+
 
 def download_mp3(video_url, output_path, song):
     try:
