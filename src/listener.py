@@ -4,7 +4,7 @@ import threading
 import sounddevice
 import os
 from whatsapp import check_for_messages
-from audio_player import stream_and_download, play_mp3
+from audio_player import stream_and_download, loop_music
 from load_songs import get_random_song
 from whatsapp import send_message
 from ai import ask_question
@@ -74,6 +74,10 @@ def handle_voice_command():
                         say("Deine Liste scheint leer zu sein")
                         continue
                     MUSIK_PROCESS = stream_and_download(song, ".", KOPIEREN)
+                elif command == VoiceCommand.LOOP:
+                    # loop boolean true
+                    # wenn music prozess == None
+                    threading.Thread(target=loop_music, args=(KOPIEREN, MUSIK_PROCESS)).start()
                 elif command == VoiceCommand.FRAGE:
                     ask_question()
                 elif command == VoiceCommand.TANK:

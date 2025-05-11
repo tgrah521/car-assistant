@@ -3,6 +3,7 @@ from enum import Enum, auto
 class VoiceCommand(Enum):
     WHATSAPP = auto()
     MUSIK = auto()
+    LOOP = auto()
     SPIELE = auto()
     FRAGE = auto()
     TANK = auto()
@@ -32,4 +33,6 @@ class VoiceCommand(Enum):
             return VoiceCommand.KOPIEREN
         elif "hilfe" in text:
             return VoiceCommand.HELP
+        elif "zufalls" in text or "wiedergabe" in text:
+            return VoiceCommand.LOOP
         return None

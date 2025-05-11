@@ -7,12 +7,13 @@ from dotenv import load_dotenv
 from voice import say
 import time
 from pathlib import Path
-from load_songs import write_in_file
+from load_songs import write_in_file, get_random_song
 import isodate
 
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / '.env')
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
+VIDEO_LENGTH = 0
 
 def get_direct_audio_url(youtube_url):
 
@@ -49,6 +50,7 @@ def stream_and_download(song, output_path, kopieren):
         say(f"Fehler beim Starten des Streams")
 
 def get_video_url(query):
+    global VIDEO_LENGTH
     youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
     request = youtube.search().list(
         q=query,
@@ -58,6 +60,7 @@ def get_video_url(query):
     )
     response = request.execute()
     video_id = response['items'][0]['id']['videoId']
+    VIDEO_LENGTH = get_video_duration(video_id)
     return f'https://www.youtube.com/watch?v={video_id}'
 
 def get_video_duration(video_id):
@@ -148,6 +151,25 @@ def auto_copy(song):
     except Exception as e:
         print(f"there was a Oupsie while Copy to your USB Flash drive with {song}: {e}")
         say("Ein unerwarteter Fehler ist aufgetreten")
+
+def loop_music(KOPIEREN, MUSIK_PROCESS):
+    song = get_random_song()
+    if song == "":
+        say("Deine Liste scheint leer zu sein")
+        return
+    MUSIK_PROCESS = stream_and_download(song, ".", KOPIEREN)
+    inkrement_per_second(0, MUSIK_PROCESS)
+    
+    
+
+def inkrement_per_second(counter, MUSIK_PROCESS):
+    global VIDEO_LENGTH
+    while True:
+        time.sleep(1)
+        counter = counter + 1
+        if counter >= VIDEO_LENGTH:
+            MUSIK_PROCESS.terminate()
+            return
 
 
 def fix_mp3(mp3_file_path, output_path):
