@@ -4,6 +4,7 @@ import os
 import time
 from voice import say, recognize_text
 from audio_player import play_mp3
+from log import writelog
 
 CONTACTS_FILE = os.path.join(os.path.dirname(__file__), '../resource/kontakte.json')
 MESSAGES_FILE = os.path.join(os.path.dirname(__file__), '../resource/nachrichten.json')
@@ -39,7 +40,7 @@ def send_message():
         except subprocess.CalledProcessError as e:
             say("Es gab ein Problem beim Senden der Nachricht.")
             print("Fehler beim Senden:")
-            print(e.stderr)
+            writelog(f"Whatsapp - send_message(): {e}")
     else:
         send_message()
 

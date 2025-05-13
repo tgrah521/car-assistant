@@ -9,6 +9,7 @@ import time
 from pathlib import Path
 from load_songs import write_in_file, get_random_song
 import isodate
+from log import writelog
 
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / '.env')
@@ -48,6 +49,7 @@ def stream_and_download(song, output_path, kopieren):
 
     except Exception as e:
         say(f"Fehler beim Starten des Streams")
+        writelog(f"audio_player - stream_and_download(): {e}")
 
 def get_video_url(query):
     global VIDEO_LENGTH
@@ -150,6 +152,7 @@ def auto_copy(song):
         return False
     except Exception as e:
         print(f"there was a Oupsie while Copy to your USB Flash drive with {song}: {e}")
+        writelog(f"audio_player - auto_copy(): {e}")
         say("Ein unerwarteter Fehler ist aufgetreten")
 
 def loop_music(KOPIEREN, MUSIK_PROCESS):
