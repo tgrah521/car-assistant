@@ -4,7 +4,7 @@ import threading
 import sounddevice
 import os
 from whatsapp import check_for_messages
-from audio_player import stream_and_download, loop_music
+from audio_player import stream_and_download, start_auto_play
 from load_songs import get_random_song
 from whatsapp import send_message
 from ai import ask_question
@@ -13,8 +13,8 @@ from obd_commands import say_obd_command
 from models.voice_commands_enums import VoiceCommand
 from help import tell_all_voice_commands
 from network import check_for_connection
+from vlc_manager import close_all_vlc
 
-MUSIK_PROCESS = None
 KOPIEREN = False
 BUTTON_PIN = 17
 GPIO.setmode(GPIO.BCM)
@@ -49,14 +49,12 @@ def listen():
                 return False
 
 def handle_voice_command():
-    global MUSIK_PROCESS
     global KOPIEREN
     threading.Thread(target=check_for_messages).start()
 
     while True:
         if listen():
-            if MUSIK_PROCESS:
-                MUSIK_PROCESS.terminate()
+            close_all_vlc()
             #play_mp3(HEARING_MP3, 2)
             action = recognize_text("ja?")
             if action == "":
@@ -73,11 +71,9 @@ def handle_voice_command():
                     if song == "":
                         say("Deine Liste scheint leer zu sein")
                         continue
-                    MUSIK_PROCESS = stream_and_download(song, ".", KOPIEREN)
+                    stream_and_download(song, ".", KOPIEREN)
                 elif command == VoiceCommand.LOOP:
-                    # loop boolean true
-                    # wenn music prozess == None
-                    threading.Thread(target=loop_music, args=(KOPIEREN, MUSIK_PROCESS)).start()
+                    start_auto_play(KOPIEREN)
                 elif command == VoiceCommand.FRAGE:
                     ask_question()
                 elif command == VoiceCommand.TANK:
@@ -95,4 +91,4 @@ def handle_voice_command():
                 elif command == VoiceCommand.HELP:
                     tell_all_voice_commands()
                 elif command == VoiceCommand.SPIELE:
-                        MUSIK_PROCESS = stream_and_download(action.lower().split("spiele", 1)[1].strip(), ".", KOPIEREN)
+                        stream_and_download(action.lower().split("spiele", 1)[1].strip(), ".", KOPIEREN)

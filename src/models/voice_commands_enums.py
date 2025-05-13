@@ -33,6 +33,6 @@ class VoiceCommand(Enum):
             return VoiceCommand.KOPIEREN
         elif "hilfe" in text:
             return VoiceCommand.HELP
-        elif "zufalls" in text or "wiedergabe" in text:
+        elif "zufall" in text or "wiedergabe" in text:
             return VoiceCommand.LOOP
         return None

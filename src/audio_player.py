@@ -10,6 +10,7 @@ from pathlib import Path
 from load_songs import write_in_file, get_random_song
 import isodate
 from log import writelog
+from vlc_manager import close_all_vlc
 
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / '.env')
@@ -37,7 +38,7 @@ def stream_and_download(song, output_path, kopieren):
         direct_url = get_direct_audio_url(video_url)
         print(f"Direkte Audio-URL erhalten: {direct_url}")
 
-        process = subprocess.Popen(["cvlc", "--play-and-exit", "--no-video", direct_url])
+        subprocess.Popen(["cvlc", "--play-and-exit", "--no-video", direct_url])
         print("VLC wurde gestartet, Audio-Streaming läuft!")
         try:
             write_in_file(song)
@@ -45,7 +46,6 @@ def stream_and_download(song, output_path, kopieren):
             say("Song konnte nicht in die liste geschrieben werden")
         if kopieren:
             threading.Thread(target=download_mp3, args=(video_url, output_path, song)).start()
-        return process
 
     except Exception as e:
         say(f"Fehler beim Starten des Streams")
@@ -128,7 +128,6 @@ def play_mp3(path,sleepTime):
     return
 
 
-
 def auto_copy(song):
     try:
         print("Now trying to copy mp3 to USB...")
@@ -155,24 +154,21 @@ def auto_copy(song):
         writelog(f"audio_player - auto_copy(): {e}")
         say("Ein unerwarteter Fehler ist aufgetreten")
 
-def loop_music(KOPIEREN, MUSIK_PROCESS):
-    song = get_random_song()
-    if song == "":
-        say("Deine Liste scheint leer zu sein")
-        return
-    MUSIK_PROCESS = stream_and_download(song, ".", KOPIEREN)
-    inkrement_per_second(0, MUSIK_PROCESS)
-    
-    
+def start_auto_play(KOPIEREN):
+    threading.Thread(target=auto_play, args=(KOPIEREN,)).start()
 
-def inkrement_per_second(counter, MUSIK_PROCESS):
-    global VIDEO_LENGTH
+def auto_play(kopieren):
+
     while True:
-        time.sleep(1)
-        counter = counter + 1
-        if counter >= VIDEO_LENGTH:
-            MUSIK_PROCESS.terminate()
-            return
+        song = get_random_song()
+        if not song:
+            say("Deine Liste scheint leer zu sein")
+            break
+
+        stream_and_download(song, ".", kopieren)
+        print(f"Spiele Song: {song} für {VIDEO_LENGTH} Sekunden")
+        time.sleep(VIDEO_LENGTH + 7)
+        close_all_vlc()
 
 
 def fix_mp3(mp3_file_path, output_path):
