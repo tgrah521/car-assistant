@@ -14,6 +14,8 @@ Features
 
 * Zufälliger Song aus Datei: Spiele zufällige Songs aus recently_played.txt ab.
 
+* Starte und Spiele automatisch weitere lieder aus recently_played.txt ab mit "zufallswiedergabe"
+
 * Fahrzeug-Warnsystem: Benachrichtigt dich bei:
 
 * Hoher Drehzahl bei niedriger Geschwindigkeit
