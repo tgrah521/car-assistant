@@ -65,6 +65,18 @@ def get_video_url(query):
     VIDEO_LENGTH = get_video_duration(video_id)
     return f'https://www.youtube.com/watch?v={video_id}'
 
+def get_video_length(query):
+    youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
+    request = youtube.search().list(
+        q=query,
+        part='id',
+        type='video',
+        maxResults=1
+    )
+    response = request.execute()
+    video_id = response['items'][0]['id']['videoId']
+    return get_video_duration(video_id)
+
 def get_video_duration(video_id):
     youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
     request = youtube.videos().list(

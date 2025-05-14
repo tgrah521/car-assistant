@@ -2,7 +2,10 @@ import os
 import random
 from log import writelog
 from voice import say, recognize_text
-
+from audio_player import stream_and_download, get_video_length
+import time
+from vlc_manager import close_all_vlc
+import threading
 
 FILE_PATH = os.path.join(os.path.dirname(__file__), '../resource/playlist.txt')
 
@@ -24,6 +27,8 @@ def playlist_delete():
     say("Ich leere die Playlist")
     clear_playlist()
 
+def playlist_start(KOPIEREN):
+    threading.Thread(target=start_playlist, args=(KOPIEREN,)).start()
         
 
 
@@ -86,3 +91,20 @@ def remove_last_song():
     except Exception as e:
         writelog(f"load_songs - remove_last_song(): {e}")
         say("Fehler beim Entfernen des letzten Songs.")
+
+
+
+def start_playlist(kopieren):
+
+    while True:
+        songs = read_playlist()
+        if not songs:
+            say("Deine Liste scheint leer zu sein")
+            break
+        for x in songs:
+
+            stream_and_download(x, ".", kopieren)
+            video_length = get_video_length(x)
+            print(f"Spiele Song: {x} für {video_length} Sekunden")
+            time.sleep(video_length + 7)
+            close_all_vlc()
