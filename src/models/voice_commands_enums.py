@@ -10,6 +10,9 @@ class VoiceCommand(Enum):
     KUEHLWASSER = auto()
     BATTERIE = auto()
     KOPIEREN = auto()
+    PLAYLIST_ADD = auto()
+    PLAYLIST_REMOVE = auto()
+    PLAYLIST_DELETE = auto()
     HELP = auto()
 
     @staticmethod
@@ -35,4 +38,10 @@ class VoiceCommand(Enum):
             return VoiceCommand.HELP
         elif "zufall" in text or "wiedergabe" in text:
             return VoiceCommand.LOOP
+        elif "wiedergabeliste hinzufügen" in text:
+            return VoiceCommand.PLAYLIST_ADD
+        elif "wiedergabeliste löschen" in text:
+            return VoiceCommand.PLAYLIST_DELETE
+        elif "wiedergabeliste entfernen" in text:
+            return VoiceCommand.PLAYLIST_REMOVE
         return None

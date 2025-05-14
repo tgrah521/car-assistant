@@ -2,7 +2,8 @@ from voice import say, recognize_text
 
 def tell_all_voice_commands():
     message = "Ich höre derzeit auf folgende Voice commands:" \
-    "Whatsapp, Musik, Spiele, Zufallswiedergabe, Frage, Tank, Kuehlwasser,  Batterie, Kopieren, Hilfe"
+    "Whatsapp, Musik, Spiele, Zufallswiedergabe, Frage, Tank, Kuehlwasser,  Batterie, Kopieren, Hilfe", 
+    "Wiedergabeliste hinzufügen", "Wiedergabeliste entfernen", "Wiedergabeliste löschen"
     say(message)
     while True:
         confirmation = recognize_text("Soll ich diese genauer erklären?") 
