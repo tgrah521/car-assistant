@@ -92,7 +92,7 @@ def handle_voice_command():
                 elif command == VoiceCommand.HELP:
                     tell_all_voice_commands()
                 elif command == VoiceCommand.SPIELE:
-                        stream_and_download(action.lower().split("spiele", 1)[1].strip(), ".", KOPIEREN)
+                    stream_and_download(action.lower().split("spiele", 1)[1].strip(), ".", KOPIEREN)
                 elif command == VoiceCommand.PLAYLIST_ADD:
                     playlist_add()
                 elif command == VoiceCommand.PLAYLIST_DELETE:
