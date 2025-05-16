@@ -15,7 +15,7 @@ from vlc_manager import close_all_vlc
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / '.env')
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
-VIDEO_LENGTH = 0
+VIDEO_URL = None
 
 def get_direct_audio_url(youtube_url):
 
@@ -30,12 +30,13 @@ def get_direct_audio_url(youtube_url):
 
 
 def stream_and_download(song, output_path, kopieren):
+    global VIDEO_URL
     say("Ich suche nach")
     say(song)
-    video_url = get_video_url(song)
+    video_length = get_video_url(song)
 
     try:
-        direct_url = get_direct_audio_url(video_url)
+        direct_url = get_direct_audio_url(VIDEO_URL)
         print(f"Direkte Audio-URL erhalten: {direct_url}")
 
         subprocess.Popen(["cvlc", "--play-and-exit", "--no-video", direct_url])
@@ -45,14 +46,15 @@ def stream_and_download(song, output_path, kopieren):
         except:
             say("Song konnte nicht in die liste geschrieben werden")
         if kopieren:
-            threading.Thread(target=download_mp3, args=(video_url, output_path, song)).start()
+            threading.Thread(target=download_mp3, args=(VIDEO_URL, output_path, song)).start()
+        return video_length
 
     except Exception as e:
         say(f"Fehler beim Starten des Streams")
         writelog(f"audio_player - stream_and_download(): {e}")
 
 def get_video_url(query):
-    global VIDEO_LENGTH
+    global VIDEO_URL
     youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
     request = youtube.search().list(
         q=query,
@@ -62,19 +64,7 @@ def get_video_url(query):
     )
     response = request.execute()
     video_id = response['items'][0]['id']['videoId']
-    VIDEO_LENGTH = get_video_duration(video_id)
-    return f'https://www.youtube.com/watch?v={video_id}'
-
-def get_video_length(query):
-    youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
-    request = youtube.search().list(
-        q=query,
-        part='id',
-        type='video',
-        maxResults=1
-    )
-    response = request.execute()
-    video_id = response['items'][0]['id']['videoId']
+    VIDEO_URL = f'https://www.youtube.com/watch?v={video_id}'
     return get_video_duration(video_id)
 
 def get_video_duration(video_id):
@@ -177,9 +167,9 @@ def auto_play(kopieren):
             say("Deine Liste scheint leer zu sein")
             break
 
-        stream_and_download(song, ".", kopieren)
-        print(f"Spiele Song: {song} für {VIDEO_LENGTH} Sekunden")
-        time.sleep(VIDEO_LENGTH + 7)
+        length = stream_and_download(song, ".", kopieren)
+        print(f"Spiele Song: {song} für {length} Sekunden")
+        time.sleep(length + 7)
         close_all_vlc()
 
 

@@ -2,7 +2,7 @@ import os
 import random
 from log import writelog
 from voice import say, recognize_text
-from audio_player import stream_and_download, get_video_length
+from audio_player import stream_and_download, get_video_duration
 import time
 from vlc_manager import close_all_vlc
 import threading
@@ -103,8 +103,7 @@ def start_playlist(kopieren):
             break
         for x in songs:
 
-            stream_and_download(x, ".", kopieren)
-            video_length = get_video_length(x)
+            video_length = stream_and_download(x, ".", kopieren)
             print(f"Spiele Song: {x} für {video_length} Sekunden")
             time.sleep(video_length + 7)
             close_all_vlc()
