@@ -37,7 +37,7 @@ class VoiceCommand(Enum):
             return VoiceCommand.KOPIEREN
         elif "hilfe" in text:
             return VoiceCommand.HELP
-        elif "zufall" in text or "wiedergabe" in text:
+        elif "zufall" in text:
             return VoiceCommand.LOOP
         elif "wiedergabeliste hinzufügen" in text:
             return VoiceCommand.PLAYLIST_ADD
