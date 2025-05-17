@@ -41,6 +41,9 @@ def playlist_load():
 def playlist_delete():
     delete_saved_playlist()
 
+def playlist_list():
+    list_playlists()
+
 def playlist_save():
     playlist_name = recognize_text("Wie soll die Wiedergabeliste heißen?")
     while True:
@@ -199,3 +202,22 @@ def delete_saved_playlist():
     except Exception as e:
         writelog(f"playlist - delete_saved_playlist(): {e}")
         say("Fehler beim Löschen der Wiedergabeliste.")
+
+
+def list_playlists():
+    try:
+        playlist_dir = os.path.join(os.path.dirname(__file__), "../resource/playlists")
+        available_playlists = os.listdir(playlist_dir)
+
+        if not available_playlists:
+            say("Es wurden keine gespeicherten Wiedergabelisten gefunden.")
+            return
+
+        say("Folgende Wiedergabelisten sind verfügbar:")
+        for playlist in available_playlists:
+            name = os.path.splitext(playlist)[0] 
+            say(name)
+
+    except Exception as e:
+        writelog(f"playlist - list_playlists(): {e}")
+        say("Beim Auflisten der Wiedergabelisten ist ein Fehler aufgetreten.")

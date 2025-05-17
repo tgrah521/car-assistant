@@ -14,7 +14,7 @@ from models.voice_commands_enums import VoiceCommand
 from help import tell_all_voice_commands
 from network import check_for_connection
 from vlc_manager import close_all_vlc
-from playlist import playlist_add, playlist_remove, playlist_delete, playlist_start, playlist_save, playlist_load, playlist_delete
+from playlist import playlist_add, playlist_remove, playlist_delete, playlist_start, playlist_save, playlist_load, playlist_delete, playlist_list
 KOPIEREN = False
 BUTTON_PIN = 17
 GPIO.setmode(GPIO.BCM)
@@ -106,5 +106,7 @@ def handle_voice_command():
                     playlist_load()
                 elif command == VoiceCommand.PLAYLIST_DELETE:
                     playlist_delete()
+                elif command == VoiceCommand.PLAYLIST_LIST:
+                    playlist_list()
                 
             
