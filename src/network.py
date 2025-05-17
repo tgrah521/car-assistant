@@ -1,10 +1,11 @@
 import socket
 import time
+from voice import say
 
 def check_for_connection():
     if not is_connected():
-        "Derzeit besteht keine Netzwerkverbindung. "
-        "Ich versuche mich erneut zu verbinden"
+        say("Derzeit besteht keine Netzwerkverbindung. " \
+        "Ich versuche mich zu verbinden")
         wait_for_connection()
     else:
         print("Netzverbindung besteht")
