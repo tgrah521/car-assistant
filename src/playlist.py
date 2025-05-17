@@ -6,6 +6,7 @@ from audio_player import stream_and_download, get_video_duration
 import time
 from vlc_manager import close_all_vlc
 import threading
+import shutil
 
 FILE_PATH = os.path.join(os.path.dirname(__file__), '../resource/playlist.txt')
 
@@ -13,11 +14,15 @@ def playlist_add():
     song = recognize_text("Welchen song wollen sie hinzufügen?")
     while True:
         confirmation = recognize_text(f"Ist {song} korrekt?")
-        if confirmation.lower() == "ja":
+        if "ja" in confirmation.lower():
             write_in_playlist(song)
             return
-        elif confirmation.lower() == "nein":
+        elif "abbrechen" in confirmation.lower():
             return
+        elif "nein" in confirmation.lower():
+            playlist_add()
+        else:
+            continue
         
 def playlist_remove():
     say("Ich entferne den letzten song aus der liste")
@@ -29,6 +34,20 @@ def playlist_delete():
 
 def playlist_start(KOPIEREN):
     threading.Thread(target=start_playlist, args=(KOPIEREN,)).start()
+
+def playlist_save():
+    playlist_name = recognize_text("Wie soll die Wiedergabeliste heißen?")
+    while True:
+        confirmation = recognize_text(f"Ist {playlist_name} korrekt?")
+        if "ja" in confirmation.lower():
+            save_playlist(playlist_name)
+            return
+        elif "abbrechen" in confirmation.lower() :
+            return
+        elif "nein" in confirmation.lower():
+            playlist_save()
+        else:
+            continue
         
 
 
@@ -107,3 +126,14 @@ def start_playlist(kopieren):
             print(f"Spiele Song: {x} für {video_length} Sekunden")
             time.sleep(video_length + 7)
             close_all_vlc()
+    
+def save_playlist(name):
+    try:
+        DESTINATION = os.path.join(os.path.dirname(__file__), f'../resource/playlists/{name}.txt')
+        shutil.copy(FILE_PATH, DESTINATION)
+        print(f'Playlist saved to {DESTINATION}')
+        say(f"Wiedergabeliste wurde erfolgreich gespeichert")
+    except Exception as e:
+        print(f'Error saving playlist: {e}')
+        say("Ein Fehler ist aufgetreten")
+        writelog(f"playlist - save_playlist() {e}")
