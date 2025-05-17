@@ -38,6 +38,9 @@ def playlist_start(KOPIEREN):
 def playlist_load():
     load_playlist()
 
+def playlist_delete():
+    delete_saved_playlist()
+
 def playlist_save():
     playlist_name = recognize_text("Wie soll die Wiedergabeliste heißen?")
     while True:
@@ -171,3 +174,28 @@ def load_playlist():
         writelog(f"playlist - load_playlist(): {e}")
         say("Beim Laden der Wiedergabeliste ist ein Fehler aufgetreten.")
 
+def delete_saved_playlist():
+    try:
+        playlist_name = recognize_text("Welche gespeicherte Wiedergabeliste soll gelöscht werden?")
+        if not playlist_name:
+            say("Ich habe keinen Namen verstanden.")
+            return
+
+        filename = f"{playlist_name}.txt"
+        playlist_dir = os.path.join(os.path.dirname(__file__), "../resource/playlists")
+        path_to_delete = os.path.join(playlist_dir, filename)
+
+        if not os.path.exists(path_to_delete):
+            say(f"Die Wiedergabeliste {playlist_name} wurde nicht gefunden.")
+            return
+
+        confirmation = recognize_text(f"Sind Sie sicher, dass ich die Wiedergabeliste {playlist_name} löschen soll?")
+        if "ja" in confirmation.lower():
+            os.remove(path_to_delete)
+            say(f"Die Wiedergabeliste {playlist_name} wurde gelöscht.")
+        else:
+            say("Löschen abgebrochen.")
+
+    except Exception as e:
+        writelog(f"playlist - delete_saved_playlist(): {e}")
+        say("Fehler beim Löschen der Wiedergabeliste.")

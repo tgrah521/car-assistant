@@ -16,6 +16,7 @@ class VoiceCommand(Enum):
     PLAYLIST_PLAY = auto()
     PLAYLIST_SAVE = auto()
     PLAYLIST_LOAD = auto()
+    PLAYLIST_DELETE = auto()
     HELP = auto()
 
     @staticmethod
@@ -51,6 +52,9 @@ class VoiceCommand(Enum):
             return VoiceCommand.PLAYLIST_PLAY
         elif "wiedergabeliste speichern" in text:
             return VoiceCommand.PLAYLIST_SAVE
-        elif "wiedergabeliste laden":
+        elif "wiedergabeliste laden" in text:
             return VoiceCommand.PLAYLIST_LOAD
+        elif "wiedergabeliste löschen" in text:
+            return VoiceCommand.PLAYLIST_DELETE
+
         return None
