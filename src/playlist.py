@@ -35,6 +35,9 @@ def playlist_delete():
 def playlist_start(KOPIEREN):
     threading.Thread(target=start_playlist, args=(KOPIEREN,)).start()
 
+def playlist_load():
+    load_playlist()
+
 def playlist_save():
     playlist_name = recognize_text("Wie soll die Wiedergabeliste heißen?")
     while True:
@@ -137,3 +140,27 @@ def save_playlist(name):
         print(f'Error saving playlist: {e}')
         say("Ein Fehler ist aufgetreten")
         writelog(f"playlist - save_playlist() {e}")
+
+def load_playlist():
+    try:
+        playlist_name = recognize_text("Wie heißt die Wiedergabeliste?")
+        if not playlist_name:
+            say("Ich habe keinen Namen verstanden.")
+            return
+
+        filename = f"{playlist_name}.txt"
+        playlist_dir = os.path.join(os.path.dirname(__file__), "../resource/playlists")
+        available_playlists = os.listdir(playlist_dir)
+
+        if filename in available_playlists:
+            source_path = os.path.join(playlist_dir, filename)
+            shutil.copy(source_path, FILE_PATH)
+            say(f"Ich habe die Wiedergabeliste {playlist_name} geladen.")
+        else:
+            say(f"Ich konnte keine Wiedergabeliste mit dem Namen {playlist_name} finden.")
+            return
+
+    except Exception as e:
+        writelog(f"playlist - load_playlist(): {e}")
+        say("Beim Laden der Wiedergabeliste ist ein Fehler aufgetreten.")
+
