@@ -28,7 +28,7 @@ def playlist_remove():
     say("Ich entferne den letzten song aus der liste")
     remove_last_song()
 
-def playlist_delete():
+def playlist_clear():
     say("Ich leere die Playlist")
     clear_playlist()
 

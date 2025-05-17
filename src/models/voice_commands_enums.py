@@ -12,7 +12,7 @@ class VoiceCommand(Enum):
     KOPIEREN = auto()
     PLAYLIST_ADD = auto()
     PLAYLIST_REMOVE = auto()
-    PLAYLIST_DELETE = auto()
+    PLAYLIST_CLEAR = auto()
     PLAYLIST_PLAY = auto()
     PLAYLIST_SAVE = auto()
     PLAYLIST_LOAD = auto()
@@ -45,8 +45,8 @@ class VoiceCommand(Enum):
             return VoiceCommand.LOOP
         elif "wiedergabeliste hinzufügen" in text:
             return VoiceCommand.PLAYLIST_ADD
-        elif "wiedergabeliste löschen" in text:
-            return VoiceCommand.PLAYLIST_DELETE
+        elif "wiedergabeliste leeren" in text:
+            return VoiceCommand.PLAYLIST_CLEAR
         elif "wiedergabeliste entfernen" in text:
             return VoiceCommand.PLAYLIST_REMOVE
         elif "wiedergabeliste starten" in text:
