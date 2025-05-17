@@ -132,14 +132,21 @@ def start_playlist(kopieren):
     
 def save_playlist(name):
     try:
-        DESTINATION = os.path.join(os.path.dirname(__file__), f'../resource/playlists/{name}.txt')
-        shutil.copy(FILE_PATH, DESTINATION)
-        print(f'Playlist saved to {DESTINATION}')
-        say(f"Wiedergabeliste wurde erfolgreich gespeichert")
+        destination = os.path.join(os.path.dirname(__file__), f'../resource/playlists/{name}.txt')
+
+        if os.path.exists(destination):
+            overwrite = recognize_text(f"Die Wiedergabeliste {name} existiert bereits. Möchten Sie sie überschreiben?")
+            if "nein" in overwrite.lower():
+                say("Speichern abgebrochen.")
+                return
+
+        shutil.copy(FILE_PATH, destination)
+        say(f"Wiedergabeliste {name} wurde erfolgreich gespeichert.")
+
     except Exception as e:
-        print(f'Error saving playlist: {e}')
-        say("Ein Fehler ist aufgetreten")
         writelog(f"playlist - save_playlist() {e}")
+        say("Ein Fehler ist beim Speichern aufgetreten.")
+
 
 def load_playlist():
     try:
