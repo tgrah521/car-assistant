@@ -6,8 +6,8 @@ def check_for_connection():
     if not is_connected():
         say("Derzeit besteht keine Internetverbindung. Ich versuche mich zu verbinden")
         wait_for_connection()
-    else:
-        say("Netzverbindung erfolgreich")
+    else: 
+        return
 
 def is_connected():
     try:
