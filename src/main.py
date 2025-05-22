@@ -15,6 +15,7 @@ INTRO_MP3 = os.path.join(os.path.dirname(__file__), '../resource/intro.mp3')
 
 def main():
     play_mp3(INTRO_MP3, 0)
+    print("Started...")
     try:
         subprocess.Popen(["python", "obd_assistant.py"])
     except:
