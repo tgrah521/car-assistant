@@ -5,7 +5,8 @@ import os
 import socket
 import time
 from dotenv import load_dotenv
-from listener import handle_voice_command, play_mp3
+from listener import handle_voice_command
+from audio_player import play_mp3
 from voice import say
 from network import check_for_connection
 

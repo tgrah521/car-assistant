@@ -1,5 +1,6 @@
 import obd
 from voice import say
+from log import writelog
 
 
 def say_obd_command(command):
@@ -19,4 +20,5 @@ def say_obd_command(command):
             say("Es besteht keine OBD verbindung")
     except Exception as e:
         print(f"Fehler {e}")
+        writelog(f"obd_commands - say_obd_command(): {e}")
         say(f"Fehler: {e}")

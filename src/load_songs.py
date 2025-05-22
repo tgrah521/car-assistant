@@ -1,5 +1,6 @@
 import os
 import random
+from log import writelog
 
 FILE_PATH = os.path.join(os.path.dirname(__file__), '../resource/recently_played.txt')
 
@@ -23,6 +24,7 @@ def read_file():
         return content.split("\n")
 
     except Exception as e:
+        writelog(f"load_songs - read_file(): {e}")
         return []
 def get_random_song():
     try:
@@ -30,4 +32,5 @@ def get_random_song():
         index = random.randint(0,len(arr))
         return arr[index-1]
     except Exception as e:
+        writelog(f"load_songs - get_random_song {e}")
         return ""   

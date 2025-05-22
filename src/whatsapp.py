@@ -4,12 +4,16 @@ import os
 import time
 from voice import say, recognize_text
 from audio_player import play_mp3
+from log import writelog
 
+COULDNT_FIND_CONTACT_COUNTER = 0
 CONTACTS_FILE = os.path.join(os.path.dirname(__file__), '../resource/kontakte.json')
 MESSAGES_FILE = os.path.join(os.path.dirname(__file__), '../resource/nachrichten.json')
 
 def send_message():
+    global COULDNT_FIND_CONTACT_COUNTER
     kontakt_name = recognize_text("An wen möchten Sie eine Nachricht senden?").strip().lower()
+
 
     try:
         with open(CONTACTS_FILE, "r") as f:
@@ -17,11 +21,17 @@ def send_message():
     except FileNotFoundError:
         say("Kontakte-Datei nicht gefunden.")
         return
+    if COULDNT_FIND_CONTACT_COUNTER == 3:
+        say("Ich beende den vorgang")
+        COULDNT_FIND_CONTACT_COUNTER = 0
+        return
 
     if kontakt_name not in kontakte:
         say(f"Ich konnte keinen Kontakt namens {kontakt_name} finden.")
-        return
+        COULDNT_FIND_CONTACT_COUNTER = COULDNT_FIND_CONTACT_COUNTER + 1
+        send_message()
 
+    COULDNT_FIND_CONTACT_COUNTER = 0
     empfänger = kontakte[kontakt_name]
 
     message = recognize_text("Wie lautet die Nachricht?")
@@ -39,7 +49,7 @@ def send_message():
         except subprocess.CalledProcessError as e:
             say("Es gab ein Problem beim Senden der Nachricht.")
             print("Fehler beim Senden:")
-            print(e.stderr)
+            writelog(f"Whatsapp - send_message(): {e}")
     else:
         send_message()
 

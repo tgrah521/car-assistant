@@ -7,12 +7,15 @@ from dotenv import load_dotenv
 from voice import say
 import time
 from pathlib import Path
-from load_songs import write_in_file
+from load_songs import write_in_file, get_random_song
 import isodate
+from log import writelog
+from vlc_manager import close_all_vlc
 
 
 load_dotenv(dotenv_path=Path(__file__).resolve().parents[1] / '.env')
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
+VIDEO_URL = None
 
 def get_direct_audio_url(youtube_url):
 
@@ -27,28 +30,31 @@ def get_direct_audio_url(youtube_url):
 
 
 def stream_and_download(song, output_path, kopieren):
+    global VIDEO_URL
     say("Ich suche nach")
     say(song)
-    video_url = get_video_url(song)
+    video_length = get_video_url(song)
 
     try:
-        direct_url = get_direct_audio_url(video_url)
+        direct_url = get_direct_audio_url(VIDEO_URL)
         print(f"Direkte Audio-URL erhalten: {direct_url}")
 
-        process = subprocess.Popen(["cvlc", "--play-and-exit", "--no-video", direct_url])
+        subprocess.Popen(["cvlc", "--play-and-exit", "--no-video", direct_url])
         print("VLC wurde gestartet, Audio-Streaming läuft!")
         try:
             write_in_file(song)
         except:
             say("Song konnte nicht in die liste geschrieben werden")
         if kopieren:
-            threading.Thread(target=download_mp3, args=(video_url, output_path, song)).start()
-        return process
+            threading.Thread(target=download_mp3, args=(VIDEO_URL, output_path, song)).start()
+        return video_length
 
     except Exception as e:
         say(f"Fehler beim Starten des Streams")
+        writelog(f"audio_player - stream_and_download(): {e}")
 
 def get_video_url(query):
+    global VIDEO_URL
     youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
     request = youtube.search().list(
         q=query,
@@ -58,7 +64,8 @@ def get_video_url(query):
     )
     response = request.execute()
     video_id = response['items'][0]['id']['videoId']
-    return f'https://www.youtube.com/watch?v={video_id}'
+    VIDEO_URL = f'https://www.youtube.com/watch?v={video_id}'
+    return get_video_duration(video_id)
 
 def get_video_duration(video_id):
     youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
@@ -123,7 +130,6 @@ def play_mp3(path,sleepTime):
     return
 
 
-
 def auto_copy(song):
     try:
         print("Now trying to copy mp3 to USB...")
@@ -147,7 +153,24 @@ def auto_copy(song):
         return False
     except Exception as e:
         print(f"there was a Oupsie while Copy to your USB Flash drive with {song}: {e}")
+        writelog(f"audio_player - auto_copy(): {e}")
         say("Ein unerwarteter Fehler ist aufgetreten")
+
+def start_auto_play(KOPIEREN):
+    threading.Thread(target=auto_play, args=(KOPIEREN,)).start()
+
+def auto_play(kopieren):
+
+    while True:
+        song = get_random_song()
+        if not song:
+            say("Deine Liste scheint leer zu sein")
+            break
+
+        length = stream_and_download(song, ".", kopieren)
+        print(f"Spiele Song: {song} für {length} Sekunden")
+        time.sleep(length + 7)
+        close_all_vlc()
 
 
 def fix_mp3(mp3_file_path, output_path):
