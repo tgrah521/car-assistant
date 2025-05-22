@@ -15,7 +15,7 @@ INTRO_MP3 = os.path.join(os.path.dirname(__file__), '../resource/intro.mp3')
 def main():
     play_mp3(INTRO_MP3, 0)
     try:
-        subprocess.Popen(["python", "/home/tgrah/car-assistent/src/obd_assistant.py"])
+        subprocess.Popen(["python", "obd_assistant.py"])
     except:
         print("Fehler bei der OBD verbindung")
     check_for_connection()
