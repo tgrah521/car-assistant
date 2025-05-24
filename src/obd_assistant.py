@@ -5,7 +5,7 @@ from voice import say
 import os
 
 CAR_WARNING = False
-HIGH_SPEED = 110
+HIGH_SPEED = 150
 connection = None
 WARNING_MP3 = os.path.join(os.path.dirname(__file__), '../resource/warning.mp3')
 SUCCESS_MP3 = os.path.join(os.path.dirname(__file__), '../resource/success.mp3')
