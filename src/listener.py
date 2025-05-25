@@ -1,5 +1,5 @@
 import speech_recognition as sr
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 import threading
 import sounddevice
 import os
@@ -32,8 +32,8 @@ def listen():
             print("Hört zu...")
             try:
                 check_for_connection()
-                if GPIO.input(BUTTON_PIN) == GPIO.LOW:
-                    return True
+   #             if GPIO.input(BUTTON_PIN) == GPIO.LOW:
+   #                 return True
                 audio = recognizer.listen(source,timeout=3, phrase_time_limit=3)
                 recognized_text = recognizer.recognize_google(audio, language="de-DE")
                 print("Erkannter Text:"+ recognized_text)
