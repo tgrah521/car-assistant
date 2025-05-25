@@ -17,8 +17,8 @@ from vlc_manager import close_all_vlc
 from playlist import playlist_add, playlist_remove, playlist_clear, playlist_start, playlist_save, playlist_load, playlist_delete, playlist_list
 KOPIEREN = False
 BUTTON_PIN = 17
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+#GPIO.setmode(GPIO.BCM)
+#GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 HEARING_MP3 = os.path.join(os.path.dirname(__file__), '../resource/hearing.mp3')
 
