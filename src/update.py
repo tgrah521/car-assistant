@@ -3,4 +3,4 @@ import subprocess
 
 say("Eine neue Version wurde installiert")
 print("Eine neue Version wurde installiert")
-subprocess.Popen(["python3", "main.py"])
+subprocess.Popen(["python", "main.py"])
