@@ -108,5 +108,8 @@ def handle_voice_command():
                     playlist_delete()
                 elif command == VoiceCommand.PLAYLIST_LIST:
                     playlist_list()
+                elif command == VoiceCommand.EXIT:
+                    say("Aufwiedersehen")
+                    exit()
                 
             
