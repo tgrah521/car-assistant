@@ -15,13 +15,13 @@ def say(text):
     engine.runAndWait()
 
 def recognize_text(message):
+    check_for_connection()
+    say(message)
     recognizer = sr.Recognizer()
     microphone = sr.Microphone()
     with microphone as source:
         recognizer.adjust_for_ambient_noise(source)
         try:
-            check_for_connection()
-            say(message)
             audio = recognizer.listen(source,timeout=3, phrase_time_limit=3)
                 # Spracherkennung
             return recognizer.recognize_google(audio, language="de-DE")
