@@ -50,7 +50,8 @@ def listen():
 
 def handle_voice_command():
     global KOPIEREN
-    threading.Thread(target=check_for_messages).start()
+    # Currently disabled because no method for recieving Whatsapp Messages and writing in "nachrichten.json"
+    # threading.Thread(target=check_for_messages).start()
 
     while True:
         if listen():
