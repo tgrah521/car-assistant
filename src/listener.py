@@ -57,7 +57,7 @@ def handle_voice_command():
         if listen():
             close_all_vlc()
             #play_mp3(HEARING_MP3, 2)
-            action = recognize_test("ja?")
+            action = recognize_text("ja?")
             if "1X" in action:
                 action = action.replace('1X ', '')
                 action = recognize_text(f"{action}. Bitte Wiederhole")
