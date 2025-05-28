@@ -9,6 +9,7 @@ from listener import handle_voice_command
 from audio_player import play_mp3
 from voice import say
 from network import check_for_connection
+from log import writelog
 
 INTRO_MP3 = os.path.join(os.path.dirname(__file__), '../resource/intro.mp3')
 
@@ -16,6 +17,7 @@ INTRO_MP3 = os.path.join(os.path.dirname(__file__), '../resource/intro.mp3')
 def main():
     play_mp3(INTRO_MP3, 0)
     print("Started...")
+    writelog("Started Car-assistant")
     try:
         subprocess.Popen(["python", "obd_assistant.py"])
     except:
