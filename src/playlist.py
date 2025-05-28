@@ -12,6 +12,9 @@ FILE_PATH = os.path.join(os.path.dirname(__file__), '../resource/playlist.txt')
 
 def playlist_add():
     song = recognize_text("Welchen song wollen sie hinzufügen?")
+    if "1X " in song:
+        say(f"{song.replace('1X ', '')}")
+        playlist_add()
     while True:
         confirmation = recognize_text(f"Ist {song} korrekt?")
         if "ja" in confirmation.lower():
