@@ -26,8 +26,8 @@ def recognize_text(message):
                 # Spracherkennung
             return recognizer.recognize_google(audio, language="de-DE")
         except sr.WaitTimeoutError as e:
-            return ""
+            return "1X Zeitüberschreitung bei der anfrage"
         except sr.UnknownValueError:
-            return ""
+            return "1X das konnte ich leider nicht verstehen"
         except KeyboardInterrupt:
-            return ""
+            return "1X Keyboardinterrupt"
