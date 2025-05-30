@@ -1,9 +1,9 @@
-mv /home/tgrah/start-car_assistant.sh /home/tgrah/start_car_assistant_old.sh
+mv /home/swt/start-car_assistant.sh /home/swt/start_car_assistant_old.sh
 
-cp /home/tgrah/git/car-assistant/resource/start_car_assistant.sh /home/tgrah
+cp /home/swt/git/car-assistant/resource/start_car_assistant.sh /home/swt
 
-rm /home/tgrah/start_car_assistant_old.sh
+rm /home/swt/start_car_assistant_old.sh
 
-chmod +x /home/tgrah/start_car_assistant.sh
+chmod +x /home/swt/start_car_assistant.sh
 
-mkdir /home/tgrah/git/car-assistant/resource/playlists
+mkdir /home/swt/git/car-assistant/resource/playlists
