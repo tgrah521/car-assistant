@@ -19,6 +19,8 @@ class VoiceCommand(Enum):
     PLAYLIST_DELETE = auto()
     PLAYLIST_LIST = auto()
     HELP = auto()
+    EXIT = auto()
+    NAVIGATION = auto()
 
     @staticmethod
     def from_text(text: str):
@@ -59,5 +61,9 @@ class VoiceCommand(Enum):
             return VoiceCommand.PLAYLIST_DELETE
         elif "wiedergabelisten" in text:
             return VoiceCommand.PLAYLIST_LIST
+        elif "beenden" in text:
+            return VoiceCommand.EXIT
+        elif "navigation" in text:
+            return VoiceCommand.NAVIGATION
 
         return None

@@ -1,5 +1,5 @@
 import speech_recognition as sr
-import RPi.GPIO as GPIO
+#import RPi.GPIO as GPIO
 import threading
 import sounddevice
 import os
@@ -17,8 +17,8 @@ from vlc_manager import close_all_vlc
 from playlist import playlist_add, playlist_remove, playlist_clear, playlist_start, playlist_save, playlist_load, playlist_delete, playlist_list
 KOPIEREN = False
 BUTTON_PIN = 17
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+#GPIO.setmode(GPIO.BCM)
+#GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 HEARING_MP3 = os.path.join(os.path.dirname(__file__), '../resource/hearing.mp3')
 
@@ -32,8 +32,8 @@ def listen():
             print("Hört zu...")
             try:
                 check_for_connection()
-                if GPIO.input(BUTTON_PIN) == GPIO.LOW:
-                    return True
+   #             if GPIO.input(BUTTON_PIN) == GPIO.LOW:
+   #                 return True
                 audio = recognizer.listen(source,timeout=3, phrase_time_limit=3)
                 recognized_text = recognizer.recognize_google(audio, language="de-DE")
                 print("Erkannter Text:"+ recognized_text)
@@ -50,15 +50,17 @@ def listen():
 
 def handle_voice_command():
     global KOPIEREN
-    threading.Thread(target=check_for_messages).start()
+    # Currently disabled because no method for recieving Whatsapp Messages and writing in "nachrichten.json"
+    # threading.Thread(target=check_for_messages).start()
 
     while True:
         if listen():
             close_all_vlc()
             #play_mp3(HEARING_MP3, 2)
             action = recognize_text("ja?")
-            if action == "":
-                action = recognize_text("Das habe ich leider nicht verstanden. Bitte Wiederhole")
+            if "1X" in action:
+                action = action.replace('1X ', '')
+                action = recognize_text(f"{action}. Bitte Wiederhole")
 
             command = VoiceCommand.from_text(action)
             if command is None:
@@ -108,5 +110,8 @@ def handle_voice_command():
                     playlist_delete()
                 elif command == VoiceCommand.PLAYLIST_LIST:
                     playlist_list()
+                elif command == VoiceCommand.EXIT:
+                    say("Aufwiedersehen")
+                    exit()
                 
             

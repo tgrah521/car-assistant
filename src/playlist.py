@@ -11,18 +11,24 @@ import shutil
 FILE_PATH = os.path.join(os.path.dirname(__file__), '../resource/playlist.txt')
 
 def playlist_add():
-    song = recognize_text("Welchen song wollen sie hinzufügen?")
     while True:
-        confirmation = recognize_text(f"Ist {song} korrekt?")
-        if "ja" in confirmation.lower():
-            write_in_playlist(song)
-            return
-        elif "abbrechen" in confirmation.lower():
-            return
-        elif "nein" in confirmation.lower():
-            playlist_add()
-        else:
-            continue
+        song = recognize_text("Welchen Song wollen Sie hinzufügen?")
+        if "1X " in song:
+            say(f"{song.replace('1X ', '')}")
+            continue 
+
+        while True:
+            confirmation = recognize_text(f"Ist {song} korrekt?")
+            if "ja" in confirmation.lower():
+                write_in_playlist(song)
+                return
+            elif "abbrechen" in confirmation.lower():
+                return
+            elif "nein" in confirmation.lower():
+                break  
+            else:
+                continue
+
         
 def playlist_remove():
     say("Ich entferne den letzten song aus der liste")
@@ -45,18 +51,24 @@ def playlist_list():
     list_playlists()
 
 def playlist_save():
-    playlist_name = recognize_text("Wie soll die Wiedergabeliste heißen?")
     while True:
-        confirmation = recognize_text(f"Ist {playlist_name} korrekt?")
-        if "ja" in confirmation.lower():
-            save_playlist(playlist_name)
-            return
-        elif "abbrechen" in confirmation.lower() :
-            return
-        elif "nein" in confirmation.lower():
-            playlist_save()
-        else:
+        playlist_name = recognize_text("Wie soll die Wiedergabeliste heißen?")
+        if not playlist_name:
+            say("Ich habe keinen Namen verstanden.")
             continue
+
+        while True:
+            confirmation = recognize_text(f"Ist {playlist_name} korrekt?")
+            if "ja" in confirmation.lower():
+                save_playlist(playlist_name)
+                return
+            elif "abbrechen" in confirmation.lower():
+                return
+            elif "nein" in confirmation.lower():
+                break  
+            else:
+                continue
+
         
 
 
