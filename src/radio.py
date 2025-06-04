@@ -70,7 +70,7 @@ def play_radio_TEST():
             print(url)
             player = vlc.MediaPlayer(url)
             player.play()
-            break
+            return
 
         except FileNotFoundError:
             say("Radiosender-Datei nicht gefunden.")
