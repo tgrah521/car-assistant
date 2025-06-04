@@ -23,7 +23,7 @@
   { "name": "FFH", "url": "http://mp3.ffh.de/radioffh/hqlivestream.mp3" },
   { "name": "planet radio", "url": "http://mp3.planetradio.de/planetradio/hqlivestream.mp3" },
   { "name": "harmony.fm", "url": "http://mp3.harmonyfm.de/harmonyfm/hqlivestream.mp3" },
-  { "name": "Radio BOB!", "url": "http://streams.radiobob.de/bob-live/mp3-192/streams.radiobob.de/" },
+  { "name": "Radio BOB", "url": "http://streams.radiobob.de/bob-live/mp3-192/streams.radiobob.de/" },
   { "name": "Rock Antenne", "url": "http://mp3.rockantenne.de/rockantenne/stream/mp3" },
   { "name": "Antenne Bayern", "url": "http://mp3channels.webradio.antenne.de/antenne" },
   { "name": "Radio Gong 96.3", "url": "http://streams.radiogong.de/gong-muenchen.mp3" },
@@ -60,15 +60,15 @@
   { "name": "rbb24 Inforadio", "url": "http://rbb-inforadio-live.cast.addradio.de/rbb/inforadio/live/mp3/128/stream.mp3" },
   { "name": "MDR Sachsen", "url": "http://mdr-284351-0.cast.mdr.de/mdr/284351/0/mp3/128" },
     {
-    "name": "RPR1.",
+    "name": "RPR1",
     "url": "https://stream.rpr1.de/webradio/mp3-128/stream.rpr1.de/"
   },
   {
-    "name": "RPR1. Rhein-Neckar",
+    "name": "RPR1 Rhein-Neckar",
     "url": "https://stream.rpr1.de/ludwigshafen/mp3-128/privat"
   },
   {
-    "name": "RPR1. Pfalz",
+    "name": "RPR1 Pfalz",
     "url": "https://stream.rpr1.de/kaiserslautern/mp3-128/privat"
   }
 ]
