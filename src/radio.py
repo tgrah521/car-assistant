@@ -41,7 +41,12 @@ def play_radio():
         print(url)
         player = vlc.MediaPlayer(url)
         player.play()
-
+        while True:
+            state = player.get_state()
+            print("State:", state)
+            if state == vlc.State.Ended or state == vlc.State.Error:
+                break
+            time.sleep(1)
 
 
 def play_radio_TEST():
