@@ -72,8 +72,10 @@ def play_radio_TEST():
 
             url = stations[radio_station]
             say(f"Spiele {radio_station} ...")
-            print(url)
-            player = vlc.MediaPlayer(url)
+            instance = vlc.Instance()
+            player = instance.media_player_new()
+            media = instance.media_new(url)
+            player.set_media(media)
             player.play()
             while True:
                 state = player.get_state()
