@@ -20,6 +20,13 @@ def wait_for_connection():
     while not is_connected():
         time.sleep(2)
 
+def get_ip_adress():
+    hostname = socket.gethostname()
+    IPAddr = socket.gethostbyname(hostname)
+
+    print("Your Computer IP Address is:" + IPAddr)
+    say(IPAddr)
+
 
 engine = pyttsx3.init()
 

@@ -22,6 +22,7 @@ class VoiceCommand(Enum):
     EXIT = auto()
     NAVIGATION = auto()
     RADIO = auto()
+    IP_ADRESS = auto()
 
     @staticmethod
     def from_text(text: str):
@@ -68,5 +69,7 @@ class VoiceCommand(Enum):
             return VoiceCommand.NAVIGATION
         elif "radio" in text:
             return VoiceCommand.RADIO
+        elif "adresse" in text:
+            return VoiceCommand.IP_ADRESS
 
         return None

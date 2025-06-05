@@ -12,7 +12,7 @@ from voice import say, recognize_text
 from obd_commands import say_obd_command
 from models.voice_commands_enums import VoiceCommand
 from help import tell_all_voice_commands
-from network import check_for_connection
+from network import check_for_connection, get_ip_adress
 from vlc_manager import close_all_vlc
 from playlist import playlist_add, playlist_remove, playlist_clear, playlist_start, playlist_save, playlist_load, playlist_delete, playlist_list
 from radio import start_radio_thread
@@ -116,5 +116,7 @@ def handle_voice_command():
                     exit()
                 elif command == VoiceCommand.RADIO:
                     start_radio_thread()
+                elif command == VoiceCommand.IP_ADRESS:
+                    get_ip_adress()
                 
             
