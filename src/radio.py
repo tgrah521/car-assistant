@@ -14,7 +14,7 @@ def start_radio_thread():
 def play_radio():
     while True:
         radio_station = recognize_text("Welchen Radiosender möchten Sie hören?").lower()
-
+        print(f"Radiosender:{radio_station}")
         if "1X " in radio_station:
             say(radio_station.replace("1X ", ""))
             continue
@@ -24,7 +24,7 @@ def play_radio():
                 station_list = json.load(f)
 
             stations = {entry["name"].lower(): entry["url"] for entry in station_list}
-
+            print("Liste gefunden")
         except FileNotFoundError:
             say("Radiosender-Datei nicht gefunden.")
             return
@@ -37,8 +37,9 @@ def play_radio():
             return
 
         url = stations[radio_station]
-        say(f"Spiele {radio_station} ...")
         print(url)
+        say(f"Spiele {radio_station} ...")
+        print(f"Spiele {radio_station} ...")
         player = vlc.MediaPlayer(url)
         player.play()
         while True:
