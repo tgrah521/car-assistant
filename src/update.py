@@ -1,5 +1,4 @@
 from network import say
-import subprocess
 
-say("Eine neue Version wurde installiert")
-print("Eine neue Version wurde installiert")
+say("Eine neue Version wird installiert")
+print("Eine neue Version wird installiert")

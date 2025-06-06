@@ -53,8 +53,8 @@ def playlist_list():
 def playlist_save():
     while True:
         playlist_name = recognize_text("Wie soll die Wiedergabeliste heißen?")
-        if not playlist_name:
-            say("Ich habe keinen Namen verstanden.")
+        if "1X " in playlist_name:
+            say(playlist_name.replace("1X ", ""))
             continue
 
         while True:
@@ -169,8 +169,8 @@ def save_playlist(name):
 def load_playlist():
     try:
         playlist_name = recognize_text("Wie heißt die Wiedergabeliste?")
-        if not playlist_name:
-            say("Ich habe keinen Namen verstanden.")
+        if "1X " in playlist_name:
+            say(playlist_name.replace("1X ", ""))
             return
 
         filename = f"{playlist_name}.txt"
@@ -192,8 +192,8 @@ def load_playlist():
 def delete_saved_playlist():
     try:
         playlist_name = recognize_text("Welche gespeicherte Wiedergabeliste soll gelöscht werden?")
-        if not playlist_name:
-            say("Ich habe keinen Namen verstanden.")
+        if "1X " in playlist_name:
+            say(playlist_name.replace("1X ", ""))
             return
 
         filename = f"{playlist_name}.txt"
