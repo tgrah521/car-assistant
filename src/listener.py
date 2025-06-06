@@ -64,9 +64,11 @@ def handle_voice_command():
                 action = recognize_text(f"{action}. Bitte Wiederhole")
 
             command = VoiceCommand.from_text(action)
+            print(f"Erkannter Text:{action}")
             if command is None:
                 say("Das habe ich leider nicht verstanden")
             else:
+                print(f"Command:{command}")
                 if command == VoiceCommand.WHATSAPP:
                     send_message()
                 elif command == VoiceCommand.MUSIK:
