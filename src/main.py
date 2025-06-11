@@ -18,10 +18,6 @@ def main():
     play_mp3(INTRO_MP3, 0)
     print("Started...")
     writelog("Started Car-assistant")
-    try:
-        subprocess.Popen(["python", "obd_assistant.py"])
-    except:
-        print("Fehler bei der OBD verbindung")
     check_for_connection()
     say("Netzwerkverbindung erfolgreich")
     handle_voice_command()
