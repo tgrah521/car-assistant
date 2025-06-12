@@ -43,7 +43,7 @@ def car_warning():
                 HIGH_SPEED = 110
         if speed_query and speed_query.value and rpm_query and rpm_query.value is not None:
             try:
-                if rpm_query.value.magnitude < 600 and speed_query.value.magnitude > 10:
+                if rpm_query.value.magnitude < 900 and speed_query.value.magnitude > 10:
                     play_mp3(WARNING_MP3, 0)
             except Exception as e:
                 print(f"Fehler: {e}")
@@ -79,8 +79,7 @@ try:
 except:
     print("Fehler bei der OBD verbindung")
     say("Die OBD Verbindung ist fehlgeschlagen")
-    exit()
-if connection.is_connected():
+if connection not None and connection.is_connected():
     CAR_WARNING = True
     play_mp3(SUCCESS_MP3, 2)
     fuel_level = connection.query(obd.commands.FUEL_LEVEL).value.magnitude

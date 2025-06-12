@@ -37,22 +37,28 @@ def send_message():
         message = recognize_text("Wie lautet die Nachricht?")
 
         say(f"Ich sende '{message}' an {kontakt_name}. Ist das korrekt?")
-        confirmation = recognize_text("Sage: Ja, richtig, korrekt oder stimmt").lower()
+        confirmation = recognize_text("Sage: Ja, richtig, korrekt, stimmt, nein oder abbrechen").lower()
 
-        if any(word in confirmation for word in ["ja", "korrekt", "stimmt", "richtig"]):
-            command = ["npx", "mudslide", "send", empfänger, message]
-            try:
-                result = subprocess.run(command, check=True, capture_output=True, text=True)
-                say("Nachricht wurde gesendet.")
-                print("Nachricht gesendet!")
-                print(result.stdout)
+        while True:
+
+            if "ja" in confirmation.lower() or "richtig" in confirmation or "korrekt" in confirmation or "stimmt" in confirmation:
+                command = ["npx", "mudslide", "send", empfänger, message]
+                try:
+                    result = subprocess.run(command, check=True, capture_output=True, text=True)
+                    say("Nachricht wurde gesendet.")
+                    print("Nachricht gesendet!")
+                    print(result.stdout)
+                    break
+                except subprocess.CalledProcessError as e:
+                    say("Es gab ein Problem beim Senden der Nachricht.")
+                    print("Fehler beim Senden:")
+                    writelog(f"Whatsapp - send_message(): {e}")
+            elif "nein" in confirmation.lower():
                 break
-            except subprocess.CalledProcessError as e:
-                say("Es gab ein Problem beim Senden der Nachricht.")
-                print("Fehler beim Senden:")
-                writelog(f"Whatsapp - send_message(): {e}")
-        else:
-            continue
+            elif "abbrechen" in confirmation.lower():
+                return
+            else:
+                continue
 
 
 
