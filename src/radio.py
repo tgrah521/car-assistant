@@ -4,15 +4,37 @@ import json
 import os
 import threading
 from voice import say, recognize_text
+from log import writelog
 
 RADIO_STATIONS = os.path.join(os.path.dirname(__file__), '../resource/radio_stations.json')
+stop_event = threading.Event()
+radio_thread = None
 
 def start_radio_thread():
-    threading.Thread(target=play_radio).start()
+    global radio_thread
+    try:
+        stop_event.clear()
+        radio_thread = threading.Thread(target=play_radio)
+        radio_thread.start()
+    except Exception as e:
+        say("Beim starten des Radios ist ein fehler aufgetreten")
+        print("Fehler beim starten des Senders")
+        writelog(f"radio - start_radio_thread(): Fehler:{e}")
+
+def stop_radio_thread():
+    try:
+        stop_event.set()
+        if radio_thread is not None:
+            radio_thread.join()
+            print("Radio thread terminated.")
+    except Exception as e:
+        say("Beim stoppen des Radios ist ein fehler aufgetreten")
+        print("Fehler beim stoppen des Senders")
+        writelog(f"radio - sttop_radio_thread(): Fehler:{e}")
 
 
 def play_radio():
-    while True:
+    while not stop_event.is_set():
         radio_station = recognize_text("Welchen Radiosender möchten Sie hören?").lower()
         print(f"Radiosender:{radio_station}")
         if "1X " in radio_station:
@@ -42,7 +64,7 @@ def play_radio():
         print(f"Spiele {radio_station} ...")
         player = vlc.MediaPlayer(url)
         player.play()
-        while True:
+        while not stop_event.is_set():
             state = player.get_state()
             print("State:", state)
             if state == vlc.State.Ended or state == vlc.State.Error:

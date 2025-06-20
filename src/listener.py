@@ -15,7 +15,7 @@ from help import tell_all_voice_commands
 from network import check_for_connection, get_ip_adress
 from vlc_manager import close_all_vlc
 from playlist import playlist_add, playlist_remove, playlist_clear, playlist_start, playlist_save, playlist_load, playlist_delete, playlist_list
-from radio import start_radio_thread
+from radio import start_radio_thread, stop_radio_thread
 KOPIEREN = False
 BUTTON_PIN = 17
 #GPIO.setmode(GPIO.BCM)
@@ -57,6 +57,7 @@ def handle_voice_command():
     while True:
         if listen():
             close_all_vlc()
+            stop_radio_thread()
             #play_mp3(HEARING_MP3, 2)
             action = recognize_text("ja?")
             if "1X" in action:
