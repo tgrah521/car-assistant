@@ -4,31 +4,32 @@ from audio_player import play_mp3
 from voice import say
 import os
 
-CAR_WARNING = False
 HIGH_SPEED = 150
 FUEL_LEVEL_WARNING = 50
 connection = None
 WARNING_MP3 = os.path.join(os.path.dirname(__file__), '../resource/warning.mp3')
 SUCCESS_MP3 = os.path.join(os.path.dirname(__file__), '../resource/success.mp3')
 
-def connect():
-    global CAR_WARNING
+def connect() -> bool:
     global connection
-    try:
-        connection = obd.OBD()
-        if connection.is_connected():
-            CAR_WARNING = True
-        else:
-            print("Keine ODB Verbindung")
-    except Exception as e:
-        play_mp3(WARNING_MP3, 2)
+    while True:
+        try:
+            connection = obd.OBD()
+            if connection.is_connected():
+                break
+            else:
+                print("Keine ODB Verbindung")
+        except Exception as e:
+            print("Fehler beim versuch zu verbinden")
+        time.sleep(2)
+    return True
 
 def car_warning():
-    try:
-        global connection
-        global HIGH_SPEED
-        global FUEL_LEVEL_WARNING
-
+    global connection
+    global HIGH_SPEED
+    global FUEL_LEVEL_WARNING
+    while True:
+        connect()
         try:
             coolant_temp_query = connection.query(obd.commands.COOLANT_TEMP)
             rpm_query = connection.query(obd.commands.RPM)
@@ -37,6 +38,7 @@ def car_warning():
         except Exception as e:
             say("Fehler bei der Fahrzeugdiagnose.")
             return
+        
         if speed_query and speed_query.value is not None:
             if speed_query.value.magnitude > HIGH_SPEED:
                 say(HIGH_SPEED)
@@ -48,11 +50,11 @@ def car_warning():
         if fuel_level and fuel_level.value is not None and fuel_level.value.magnitude < FUEL_LEVEL_WARNING:
             play_mp3(WARNING_MP3, 2)
             say(f"Tankelevel beträgt {FUEL_LEVEL_WARNING} prozent")
-            FUEL_LEVEL_WARNING = FUEL_LEVEL_WARNING - 10
+            FUEL_LEVEL_WARNING -= 10
 
         if speed_query and speed_query.value and rpm_query and rpm_query.value is not None:
             try:
-                if rpm_query.value.magnitude < 900 and speed_query.value.magnitude > 10:
+                if rpm_query.value.magnitude < 700 and speed_query.value.magnitude > 10:
                     play_mp3(WARNING_MP3, 0)
             except Exception as e:
                 print(f"Fehler: {e}")
@@ -80,25 +82,19 @@ def car_warning():
 
         time.sleep(1)
 
-    except Exception as e:
-        print(f"Unbekannter Fehler in car_warning(): {e}")
-        say("Ein schwerwiegender Fehler ist aufgetreten.")
-try:
-    connection = obd.OBD()
-except:
-    print("Fehler bei der OBD verbindung")
-    say("Die OBD Verbindung ist fehlgeschlagen")
-if connection is not None and connection.is_connected():
-    CAR_WARNING = True
-    play_mp3(SUCCESS_MP3, 2)
-    fuel_level = connection.query(obd.commands.FUEL_LEVEL).value.magnitude
-    say(f"Tanklevel: {round(fuel_level, 2)} prozent")
-else:
-    say("die OBD Verbindung ist fehlgeschlagen")
 
-while True:
-    time.sleep(2)
-    if CAR_WARNING:
-        car_warning()
-    else:
-        connect()
+def initial_connection_sound(is_connected):
+    global connection
+    try:
+        if is_connected:
+            play_mp3(SUCCESS_MP3, 2)
+            fuel_level = connection.query(obd.commands.FUEL_LEVEL).value.magnitude
+            say(f"Tanklevel: {round(fuel_level, 2)} prozent")
+        else:
+            say("die OBD Verbindung ist fehlgeschlagen")
+    except Exception as e:
+        say("Fehler beim ansagen des Füllstandes")
+        print(f"Fehler beim ansagen des Füllstandes: {e}")
+
+initial_connection_sound(connect())
+car_warning()
