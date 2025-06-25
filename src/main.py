@@ -15,7 +15,7 @@ INTRO_MP3 = os.path.join(os.path.dirname(__file__), '../resource/intro.mp3')
 
 
 def main():
-    time.sleep(10)
+    time.sleep(5)
     print("Started...")
     writelog("Started Car-assistant")
     check_for_connection()
