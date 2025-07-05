@@ -37,10 +37,9 @@ def send_message():
         message = recognize_text("Wie lautet die Nachricht?")
 
         say(f"Ich sende '{message}' an {kontakt_name}. Ist das korrekt?")
-        confirmation = recognize_text("Sage: Ja, richtig, korrekt, stimmt, nein oder abbrechen").lower()
 
         while True:
-
+            confirmation = recognize_text("Sage: Ja, richtig, korrekt, stimmt, nein oder abbrechen").lower()
             if "ja" in confirmation.lower() or "richtig" in confirmation or "korrekt" in confirmation or "stimmt" in confirmation:
                 command = ["npx", "mudslide", "send", empfänger, message]
                 try:
