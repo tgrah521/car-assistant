@@ -17,3 +17,4 @@ node_modules/
  
 /resource/nachrichten.json
 /resource/kontakte.json
+/resource/playlists/**
