@@ -91,7 +91,7 @@ def initial_connection_sound(is_connected):
             play_mp3(SUCCESS_MP3, 2)
             fuel_level = connection.query(obd.commands.FUEL_LEVEL).value.magnitude
             say(f"Tanklevel: {round(fuel_level, 2)} prozent")
-            while fuel_level + 10 < FUEL_LEVEL_WARNING:
+            while fuel_level < FUEL_LEVEL_WARNING:
                 FUEL_LEVEL_WARNING -= 10
         else:
             say("die OBD Verbindung ist fehlgeschlagen")
