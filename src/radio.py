@@ -22,6 +22,7 @@ def start_radio_thread():
         writelog(f"radio - start_radio_thread(): Fehler:{e}")
 
 def stop_radio_thread():
+    global radio_thread
     try:
         stop_event.set()
         if radio_thread is not None:
