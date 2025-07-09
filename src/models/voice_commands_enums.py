@@ -20,6 +20,7 @@ class VoiceCommand(Enum):
     PLAYLIST_LIST = auto()
     HELP = auto()
     EXIT = auto()
+    RESTART = auto()
     NAVIGATION = auto()
     RADIO = auto()
     IP_ADRESS = auto()
@@ -65,6 +66,8 @@ class VoiceCommand(Enum):
             return VoiceCommand.PLAYLIST_LIST
         elif "beenden" in text:
             return VoiceCommand.EXIT
+        elif "neustart" in text:
+            return VoiceCommand.RESTART
         elif "navigation" in text:
             return VoiceCommand.NAVIGATION
         elif "radio" in text:
