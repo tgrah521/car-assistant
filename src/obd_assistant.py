@@ -21,7 +21,6 @@ def connect() -> bool:
                 print("Keine ODB Verbindung")
         except Exception as e:
             print("Fehler beim versuch zu verbinden")
-        time.sleep(2)
     return True
 
 def car_warning():
